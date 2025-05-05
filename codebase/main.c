@@ -49,15 +49,6 @@ int main(int argc, char *argv[])
     }
   }
 
-  // Peripherals initialisation
-  
-  void *spi_leds_mem_base = map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
-
-  if (!spi_leds_mem_base) {
-    fprintf(stderr, "Error.\n");
-    return 1;
-  }
-
   /*
   init_encoders(spi_leds_mem_base);
   init_speaker(spi_leds_mem_base);

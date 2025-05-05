@@ -6,6 +6,22 @@
 DisBuff disBuff;
 void *parlcd_mem_base;
 
+#define WHITE 0xFFFF
+#define BLACK 0x0000
+#define RED 0xF800
+#define GREEN 0x07E0
+#define BLUE 0x001F
+#define YELLOW 0xFFE0
+#define CYAN 0x07FF
+#define MAGENTA 0xF81F
+#define PINK 0xFC99
+#define ORANGE 0xFBE4
+#define PURPLE 0x8000
+#define GRAY 0x7BEF
+#define BROWN 0xA145
+#define LIGHT_GRAY 0xD3DF
+#define DARK_GRAY 0x7BEF
+
 
 void init_lcd(){
     parlcd_mem_base = map_phys_address(PARLCD_REG_BASE_PHYS, PARLCD_REG_SIZE, 0);
@@ -14,9 +30,10 @@ void init_lcd(){
     disBuff.width = LCD_WIDTH;
     disBuff.height = LCD_HEIGHT;
     for (int i = 0; i < LCD_WIDTH * LCD_HEIGHT; i++) {
-        disBuff.data[i] = 0xFFFF; // White color
+        disBuff.data[i] = BLUE; // Pink color
     }
 }
+
 void draw(){
     uint16_t *data = disBuff.data;
 
@@ -25,4 +42,8 @@ void draw(){
     for (int i = 0; i < disBuff.height * disBuff.width; i++){
         parlcd_write_data(parlcd_mem_base, data[i]);
     }
+}
+
+void drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color){
+    // TO DO: Implement Bresenham's line algorithm
 }
