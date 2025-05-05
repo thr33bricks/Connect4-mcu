@@ -32,6 +32,13 @@
 #include "speaker.h"
 #include "leds.h"
 
+enum GameState {
+  STATE_MENU,
+  STATE_INSTRUCTIONS,
+  STATE_PLAYING,
+  STATE_GAME_OVER
+};
+
 
 int main(int argc, char *argv[])
 {
@@ -50,7 +57,7 @@ int main(int argc, char *argv[])
   }
 
   // Initialisation
-  map_phys_memory();
+  map_phys_address();
   parlcd_hx8357_init(get_lcd_fd());
   init_lcd();
   init_encoders();
