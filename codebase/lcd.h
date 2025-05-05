@@ -1,12 +1,10 @@
 #ifndef LCD_H
 #define LCD_H
 
-#include "mzapo_parlcd.h"
-#include "mzapo_regs.h"
+#include <stdint.h>
 
 #define LCD_WIDTH 480
 #define LCD_HEIGHT 320
-#define LCD_BASE_ADDR PARLCD_REG_BASE_PHYS
 
 typedef struct {
     int width;
