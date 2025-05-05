@@ -32,10 +32,8 @@
 #include "speaker.h"
 #include "leds.h"
 
-
 int main(int argc, char *argv[])
 {
-
   /* Serialize execution of applications */
 
   /* Try to acquire lock the first */
@@ -49,29 +47,38 @@ int main(int argc, char *argv[])
     }
   }
 
-  // Initialisation
-  map_phys_memory();
-  parlcd_hx8357_init(get_lcd_fd());
-  init_lcd();
-  init_encoders();
-  init_speaker();
-  init_leds();
+  // Peripherals initialisation
+  void *parlcd_mem_base = map_phys_address(PARLCD_REG_BASE_PHYS, PARLCD_REG_SIZE, 0);
+  void *spi_leds_mem_base = map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
 
-  // FSM 
+  if (!parlcd_mem_base || !spi_leds_mem_base) {
+    fprintf(stderr, "Error.\n");
+    return 1;
+  }
+
+  parlcd_hx8357_init(parlcd_mem_base);
+  init_lcd(parlcd_mem_base);
+  /*
+  init_encoders(spi_leds_mem_base);
+  init_speaker(spi_leds_mem_base);
+  init_leds(spi_leds_mem_base);
+  */
+
+  // Game FSM
   GameState state = STATE_MENU;
   while (1) {
     switch (state) {
       case STATE_MENU:
-        state = handle_menu();
+        state = handle_menu(parlcd_mem_base, spi_leds_mem_base);
         break;
       case STATE_INSTRUCTIONS:
-        state = handle_instructions();
+        state = handle_instructions(parlcd_mem_base);
         break;
       case STATE_PLAYING:
-        state = handle_game();
+        state = handle_game(parlcd_mem_base, spi_leds_mem_base);
         break;
       case STATE_GAME_OVER:
-        state = handle_game_over();
+        state = handle_game_over(parlcd_mem_base, spi_leds_mem_base);
         break;
     }
   }
@@ -81,4 +88,3 @@ int main(int argc, char *argv[])
 
   return 0;
 }
-
