@@ -26,6 +26,13 @@
 #include "mzapo_regs.h"
 #include "serialize_lock.h"
 
+#include "logic_game.h"
+#include "lcd.h"
+#include "rotary_encoder.h"
+#include "speaker.h"
+#include "leds.h"
+
+
 int main(int argc, char *argv[])
 {
 
@@ -42,14 +49,36 @@ int main(int argc, char *argv[])
     }
   }
 
-  printf("Hello world\n");
+  // Initialisation
+  map_phys_memory();
+  parlcd_hx8357_init(get_lcd_fd());
+  init_lcd();
+  init_encoders();
+  init_speaker();
+  init_leds();
 
-  sleep(4);
-
-  printf("Goodbye world\n");
+  // FSM 
+  GameState state = STATE_MENU;
+  while (1) {
+    switch (state) {
+      case STATE_MENU:
+        state = handle_menu();
+        break;
+      case STATE_INSTRUCTIONS:
+        state = handle_instructions();
+        break;
+      case STATE_PLAYING:
+        state = handle_game();
+        break;
+      case STATE_GAME_OVER:
+        state = handle_game_over();
+        break;
+    }
+  }
 
   /* Release the lock */
   serialize_unlock();
 
   return 0;
 }
+
