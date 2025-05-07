@@ -30,7 +30,7 @@ void init_lcd(){
     disBuff.width = LCD_WIDTH;
     disBuff.height = LCD_HEIGHT;
     for (int i = 0; i < LCD_WIDTH * LCD_HEIGHT; i++) {
-        disBuff.data[i] = BLUE; // Pink color
+        disBuff.data[i] = BLUE; 
     }
 }
 
@@ -47,3 +47,30 @@ void draw(){
 void drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color){
     // TO DO: Implement Bresenham's line algorithm
 }
+
+/*
+void display_menu(){
+    // Title : "Connect 4"
+    // Red Play button + number of games selection
+    // Green Instructions button
+    // Blue Close button 
+}
+void display_instructions(){
+    // Title : "Instructions"
+    // Instructions text
+    // Blue back button
+    // Green cursor
+}
+void display_game(){
+    // Scores
+    // Grid
+    // Column selection with de red button & rotary encoder
+    // Blue menu button
+}
+void display_game_over(){
+    // Title : "Game over"
+    // Scores
+    // Blue "Menu" button
+    // Green "Play again" button
+}
+*/

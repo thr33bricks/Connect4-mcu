@@ -15,4 +15,11 @@ typedef struct {
 void init_lcd();
 void draw();
 
+/*
+void display_menu();
+void display_instructions();
+void display_game();
+void display_game_over();
+*/
+
 #endif
