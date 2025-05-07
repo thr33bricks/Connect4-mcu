@@ -40,4 +40,11 @@ void drawFillCircle(uint16_t x0, uint16_t y0, uint16_t r, uint16_t color);
 void drawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t color);
 void drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
 
+/*
+void display_menu();
+void display_instructions();
+void display_game();
+void display_game_over();
+*/
+
 #endif
