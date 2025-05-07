@@ -10,10 +10,18 @@ void start_game(){
 
 GameState handle_menu(){
     draw();
-    // Handle interruptions (Red, Blue and Green button + red rotary encoder)
-    /*
-        while (1){
 
+    /*
+    // Handle interruptions (Red, Blue and Green button + red rotary encoder)
+    int was_red_clicked = 0;
+    while (1){
+        // Scanning red button
+        int now = is_red_clicked(spi_leds_base);
+        if (now && !was_red_clicked) {
+            return STATE_PLAYING;
+        }
+        was_red_clicked = now;
+        usleep(10000); // 10 ms
     }
     */
 
