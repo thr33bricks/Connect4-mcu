@@ -11,6 +11,12 @@ void start_game(){
 GameState handle_menu(){
     draw();
     // Handle interruptions (Red, Blue and Green button + red rotary encoder)
+    /*
+        while (1){
+
+    }
+    */
+
     // display_menu();
     return STATE_MENU;
 }
@@ -26,3 +32,5 @@ GameState handle_game_over(){
     // Handle interruptions (Blue and green button)
     // display_game_over();
 }
+
+

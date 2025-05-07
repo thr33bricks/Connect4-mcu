@@ -27,7 +27,7 @@ void parlcd_write_cmd(unsigned char *parlcd_mem_base, uint16_t cmd);
 
 void parlcd_write_data(unsigned char *parlcd_mem_base, uint16_t data);
 
-void parlcd_write_data2x(unsigned char *parlcd_mem_base, uint32_t data);
+void parlcd_write_data2x(unsigned char *parlcd_mem_base, uint32_t data); // To display the lcd two times faster
 
 void parlcd_delay(int msec);
 
