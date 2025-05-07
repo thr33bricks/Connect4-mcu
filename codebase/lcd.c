@@ -6,22 +6,6 @@
 DisBuff disBuff;
 void *parlcd_mem_base;
 
-#define WHITE 0xFFFF
-#define BLACK 0x0000
-#define RED 0xF800
-#define GREEN 0x07E0
-#define BLUE 0x001F
-#define YELLOW 0xFFE0
-#define CYAN 0x07FF
-#define MAGENTA 0xF81F
-#define PINK 0xFC99
-#define ORANGE 0xFBE4
-#define PURPLE 0x8000
-#define GRAY 0x7BEF
-#define BROWN 0xA145
-#define LIGHT_GRAY 0xD3DF
-#define DARK_GRAY 0x7BEF
-
 
 void init_lcd(){
     parlcd_mem_base = map_phys_address(PARLCD_REG_BASE_PHYS, PARLCD_REG_SIZE, 0);
@@ -29,9 +13,6 @@ void init_lcd(){
 
     disBuff.width = LCD_WIDTH;
     disBuff.height = LCD_HEIGHT;
-    for (int i = 0; i < LCD_WIDTH * LCD_HEIGHT; i++) {
-        disBuff.data[i] = BLUE; // Pink color
-    }
 }
 
 void draw(){
@@ -44,6 +25,94 @@ void draw(){
     }
 }
 
+void drawPixel(uint16_t x, uint16_t y, uint16_t color){
+    if (x < LCD_WIDTH && y < LCD_HEIGHT) {
+        disBuff.data[y * LCD_WIDTH + x] = color;
+    }
+}
+
+void drawBackground(uint16_t color){
+    for (int i = 0; i < LCD_WIDTH * LCD_HEIGHT; i++) {
+        disBuff.data[i] = color;
+    }
+}
+
+void drawRect (uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color){
+    drawLine(x, y, x+width, y, color);
+    drawLine(x, y, x, y+height, color);
+    drawLine(x, y+height, x+width, y+height, color);
+    drawLine(x+width, y, x+width, y+height, color);
+}
+
+void drawFillRect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color){
+    for (uint16_t i = 0; i < width; i++) {
+        for (uint16_t j = 0; j < height; j++) {
+            drawPixel(x + i, y + j, color);
+        }
+    }
+}
+
+void drawCircle(uint16_t x0, uint16_t y0, uint16_t r, uint16_t color){
+    int16_t x = r;
+    int16_t y = 0;
+    int16_t err = 0;
+
+    while (x >= y) {
+        drawPixel(x0 + x, y0 + y, color);
+        drawPixel(x0 + y, y0 + x, color);
+        drawPixel(x0 - y, y0 + x, color);
+        drawPixel(x0 - x, y0 + y, color);
+        drawPixel(x0 - x, y0 - y, color);
+        drawPixel(x0 - y, y0 - x, color);
+        drawPixel(x0 + y, y0 - x, color);
+        drawPixel(x0 + x, y0 - y, color);
+
+        if (err <= 0) {
+            err += 2 * ++y + 1;
+        }
+        if (err > 0) {
+            err -= 2 * --x;
+        }
+    }
+}
+
+void drawFillCircle(uint16_t x0, uint16_t y0, uint16_t r, uint16_t color){
+    for (int16_t y = -r; y <= r; y++) {
+        for (int16_t x = -r; x <= r; x++) {
+            if (x * x + y * y <= r * r) {
+                drawPixel(x0 + x, y0 + y, color);
+            }
+        }
+    }
+}
+
+void drawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t color){
+    drawLine(x1, y1, x2, y2, color);
+    drawLine(x2, y2, x3, y3, color);
+    drawLine(x3, y3, x1, y1, color);
+}
+
 void drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color){
-    // TO DO: Implement Bresenham's line algorithm
+    uint16_t dx = abs(x2 - x1);
+    uint16_t dy = abs(y2 - y1);
+    uint16_t sx = (x1 < x2) ? 1 : -1;
+    uint16_t sy = (y1 < y2) ? 1 : -1;
+    uint16_t err = dx - dy;
+
+    while (1) {
+        drawPixel(x1, y1, color);
+
+        if (x1 == x2 && y1 == y2)
+            break;
+
+        int e2 = 2 * err;
+        if (e2 > -dy) {
+            err -= dy;
+            x1 += sx;
+        }
+        if (e2 < dx) {
+            err += dx;
+            y1 += sy;
+        }
+    }
 }
