@@ -13,12 +13,6 @@ void init_lcd(){
 
     disBuff.width = LCD_WIDTH;
     disBuff.height = LCD_HEIGHT;
-<<<<<<< HEAD
-=======
-    for (int i = 0; i < LCD_WIDTH * LCD_HEIGHT; i++) {
-        disBuff.data[i] = BLUE; 
-    }
->>>>>>> 4f742dfe08f020bc4918d57e11b286b21c4ee98b
 }
 
 void draw(){

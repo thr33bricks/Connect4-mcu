@@ -2,6 +2,7 @@
 #define LCD_H
 
 #include <stdint.h>
+#include <stdlib.h>
 
 #define LCD_WIDTH 480
 #define LCD_HEIGHT 320

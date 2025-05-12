@@ -62,16 +62,16 @@ int main(int argc, char *argv[])
   while (1) {
     switch (state) {
       case STATE_MENU:
-        state = handle_menu();//arlcd_mem_base, spi_leds_mem_base);
+        state = handle_menu();
         break;
       case STATE_INSTRUCTIONS:
-        state = handle_instructions();//parlcd_mem_base);
+        state = handle_instructions();
         break;
       case STATE_PLAYING:
-        state = handle_game();//parlcd_mem_base, spi_leds_mem_base);
+        state = handle_game();
         break;
       case STATE_GAME_OVER:
-        state = handle_game_over();//parlcd_mem_base, spi_leds_mem_base);
+        state = handle_game_over();
         break;
     }
   }

@@ -33,14 +33,20 @@ GameState handle_menu(){
 GameState handle_instructions(){
     // Handle interruptions (Blue button + green rotary encoder)
     // display_instructions();
+
+    return STATE_INSTRUCTIONS;
 }
 GameState handle_game(){
     // Handle interruptions (Blue and red button + red rotary encoder)
     // display_game();
+
+    return STATE_PLAYING;
 }
 GameState handle_game_over(){
     // Handle interruptions (Blue and green button)
     // display_game_over();
+
+    return STATE_GAME_OVER;
 }
 
 
