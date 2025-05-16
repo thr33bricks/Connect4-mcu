@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     printf("System is occupied\n");
 
     if (1) {
-      printf("Waitting\n");
+      printf("Waiting\n");
       /* Wait till application holding lock releases it or exits */
       serialize_lock(0);
     }
@@ -55,23 +55,24 @@ int main(int argc, char *argv[])
   init_leds(spi_leds_mem_base);
   */
 
-  init_game();
+  initGame();
 
   // Game FSM
   GameState state = STATE_MENU;
   while (1) {
     switch (state) {
       case STATE_MENU:
-        state = handle_menu();
+        state = handleMenu();
+        state = STATE_PLAYING;
         break;
       case STATE_INSTRUCTIONS:
-        state = handle_instructions();
+        state = handleInstructions();
         break;
       case STATE_PLAYING:
-        state = handle_game();
+        state = handleGame();
         break;
       case STATE_GAME_OVER:
-        state = handle_game_over();
+        state = handleGameOver();
         break;
     }
   }

@@ -1,53 +1,54 @@
 #include "rotary_encoder.h"
 #include "mzapo_regs.h"
+#include "mzapo_phys.h"
 #include <stdint.h>
+#include <stdio.h>
 
-static uint8_t prev_rot_red = 0;
-static uint8_t prev_rot_green = 0;
-static uint8_t prev_rot_blue = 0;
-
-int is_red_clicked(void *base) {
-    uint32_t val = *(volatile uint32_t *)(base + SPILED_REG_KBDRD_KNOBS_DIRECT_o);
-    return (val >> 0) & 0x1;    // Returns 1 if the red button is pressed
+uint32_t getKnobsMem(){
+    return *(volatile uint32_t *)(knobsBase + SPILED_REG_KNOBS_8BIT_o);
 }
 
-int is_green_clicked(void *base) {
-    uint32_t val = *(volatile uint32_t *)(base + SPILED_REG_KBDRD_KNOBS_DIRECT_o);
-    return (val >> 1) & 0x1;    // Returns 1 if the green button is pressed
+void initEncoders() {
+    knobsBase = map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
 }
 
-int is_blue_clicked(void *base) {
-    uint32_t val = *(volatile uint32_t *)(base + SPILED_REG_KBDRD_KNOBS_DIRECT_o);
-    return (val >> 2) & 0x1;    // Returns 1 if the blue button is pressed
+uint8_t isRedClicked() {
+    return ((getKnobsMem() & 0xff000000) >> 26) & 0x1;
 }
 
-int get_rotation_red(void *base) {
-    uint32_t val = *(volatile uint32_t *)(base + SPILED_REG_KBDRD_KNOBS_DIRECT_o);
-    uint8_t new_rot = (val >> 16) & 0xFF;
-    int delta = (int8_t)(new_rot - prev_rot_red);
-    prev_rot_red = new_rot;
-    return delta;
+uint8_t isGreenClicked() {
+    return ((getKnobsMem() & 0xff000000) >> 25) & 0x1;
 }
 
-int get_rotation_green(void *base) {
-    uint32_t val = *(volatile uint32_t *)(base + SPILED_REG_KBDRD_KNOBS_DIRECT_o);
-    uint8_t new_rot = (val >> 24) & 0xFF;
-    int delta = (int8_t)(new_rot - prev_rot_green);
-    prev_rot_green = new_rot;
-    return delta;
+uint8_t isBlueClicked() {
+    return ((getKnobsMem() & 0xff000000) >> 24) & 0x1;
 }
 
-int get_rotation_blue(void *base) {
-    uint32_t val = *(volatile uint32_t *)(base + SPILED_REG_KBDRD_KNOBS_DIRECT_o);
-    uint8_t new_rot = (val >> 8) & 0xFF;
-    int delta = (int8_t)(new_rot - prev_rot_blue);
-    prev_rot_blue = new_rot;
-    return delta;
+// int clicked(){
+//     // 1=blue,2=green,4=red
+//     return (getKnobsMem() & 0xff000000) >> 24;
+// }
+
+uint8_t getRotRed() {
+    #ifdef REVERSE
+    return 63-((getKnobsMem() & 0x00ff0000) >> 16)/4;
+    #else
+    return ((getKnobsMem() & 0x00ff0000) >> 16)/4;
+    #endif
 }
 
-void init_encoders(void *base) {
-    uint32_t val = *(volatile uint32_t *)(base + SPILED_REG_KBDRD_KNOBS_DIRECT_o);
-    prev_rot_red = (val >> 16) & 0xFF;
-    prev_rot_green = (val >> 24) & 0xFF;
-    prev_rot_blue = (val >> 8) & 0xFF;
+uint8_t getRotGreen() {
+    #ifdef REVERSE
+    return 63-((getKnobsMem() & 0x0000ff00) >> 8)/4;
+    #else
+    return ((getKnobsMem() & 0x0000ff00) >> 8)/4;
+    #endif
+}
+
+uint8_t getRotBlue() {
+    #ifdef REVERSE
+    return 63-(getKnobsMem() & 0x000000ff)/4;
+    #else
+    return (getKnobsMem() & 0x000000ff)/4;
+    #endif
 }
