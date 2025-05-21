@@ -23,14 +23,14 @@ void draw(){
 
     parlcd_write_cmd(parlcd_mem_base, 0x2C);
 
-    // for (int i = 0; i < disBuff.height * disBuff.width; i++){
-    //     parlcd_write_data(parlcd_mem_base, data[i]);
-    // }
-
-    // Untested!
-    for (int i = 0; i < disBuff.height * disBuff.width; i+=2){
-        parlcd_write_data2x(parlcd_mem_base, data[i]<<16 | data[i+1]);
+    for (int i = 0; i < disBuff.height * disBuff.width; i++){
+        parlcd_write_data(parlcd_mem_base, data[i]);
     }
+
+    // Messy image for some reason :X
+    // for (int i = 0; i < disBuff.height * disBuff.width; i+=2){
+    //     parlcd_write_data2x(parlcd_mem_base, (((uint32_t)data[i])<<16) | (uint32_t)data[i+1]);
+    // }
 }
 
 void drawPixel(uint16_t x, uint16_t y, uint16_t color){
