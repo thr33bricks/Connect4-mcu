@@ -42,15 +42,34 @@ void initGame() {
 void startGame(){
 
 }
-
+//====== DISPLAY MENU ============//
 void displayMenu(){
-    
+    drawConnect4Title();
+    drawPlayButton();
+    drawInstructionButton();
 }
 
+void drawConnect4Title(){
+    char title[10];
+    title="Connect 4";
+    drawText(4, 100, 20, title, RED, 1);
+}
+
+void drawPlayButton(){
+    drawRect (100, 200, 50, 50, RED);
+}
+
+void drawInstructionButton(){
+    drawRect (100, 400, 50, 50, GREEN);
+}
+
+
+//====== DISPLAY INSTRUCTIONS ============//
 void displayInstructions(){
 
 }
 
+// =========== DISPLAY GAME ========= //
 void currentSelection(){
     int rot = getRotRed();
     currPosX = rot % 7;
@@ -118,7 +137,7 @@ void displayGame(){
     drawScore();
     draw();
 }
-
+//====== DISPLAY GAME OVER ============//
 void displayGameOver(){
 
 }

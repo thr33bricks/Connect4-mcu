@@ -22,6 +22,10 @@ void drawScore();
 void displayGame();
 void displayGameOver();
 
+void drawConnect4Title();
+void drawPlayButton();
+void drawInstructionButton();
+
 GameState handleMenu();
 GameState handleInstructions();
 GameState handleGame();
