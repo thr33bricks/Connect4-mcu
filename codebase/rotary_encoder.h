@@ -1,18 +1,23 @@
 #ifndef ROTARY_ENCODER_H
 #define ROTARY_ENCODER_H
 
-#define REVERSE
+#include <stdint.h>
 
-void *knobsBase;
+//#define REVERSE
+
+#define BTN_RED   1
+#define BTN_GREEN 2
+#define BTN_BLUE  3
+
+#define DEBOUNCE_INTERVAL 14
 
 // Initialisation
 void initEncoders();
 
 // For buttons
-uint8_t isRedClicked();
-uint8_t isGreenClicked();
-uint8_t isBlueClicked();
-// int clicked();
+void _checkEdge(uint8_t btn);
+uint8_t isDown(uint8_t btn);
+uint8_t wasPressed(uint8_t btn);
 
 // For rotations
 uint8_t getRotRed();
