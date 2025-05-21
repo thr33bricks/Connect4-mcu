@@ -27,4 +27,6 @@ GameState handleInstructions();
 GameState handleGame();
 GameState handleGameOver();
 
+int isGameOver(char color);
+
 #endif

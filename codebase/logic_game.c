@@ -135,7 +135,13 @@ GameState handleInstructions(){
 }
 GameState handleGame(){
     // Handle interruptions (Blue and red button + red rotary encoder)
-    currentSelection();
+    currentSelection(); // Rotary encoder
+    displayGame();
+    // check red button (to select the right column)
+    // check blue button (to go back to the main menu)
+    clearCurrSel();
+    // Use the isGameOver(char color) function
+
     return STATE_PLAYING;
 }
 GameState handleGameOver(){
@@ -144,5 +150,57 @@ GameState handleGameOver(){
 
     return STATE_GAME_OVER;
 }
+ 
+int isGameOver(char color) {
+    int lignes = 6;
+    int rows = 7;
 
+    // Horizontal checking
+    for (int i = 0; i < lignes; i++) {
+        for (int j = 0; j < rows - 3; j++) {
+            if ((board[i][j] == color) &&
+                (board[i][j+1] == color) &&
+                (board[i][j+2] == color) &&
+                (board[i][j+3] == color)) {
+                return 1;
+            }
+        }
+    }
 
+    // Vertical checking
+    for (int i = 0; i < lignes - 3; i++) {
+        for (int j = 0; j < rows; j++) {
+            if ((board[i][j] == color) &&
+                (board[i+1][j] == color) &&
+                (board[i+2][j] == color) &&
+                (board[i+3][j] == color)) {
+                return 1;
+            }
+        }
+    }
+
+    // Diagonal checking ↘
+    for (int i = 0; i < lignes - 3; i++) {
+        for (int j = 0; j < rows - 3; j++) {
+            if ((board[i][j] == color) &&
+                (board[i+1][j+1] == color) &&
+                (board[i+2][j+2] == color) &&
+                (board[i+3][j+3] == color)) {
+                return 1;
+            }
+        }
+    }
+
+    // Diagonal checking ↗
+    for (int i = 3; i < lignes; i++) {
+        for (int j = 0; j < rows - 3; j++) {
+            if ((board[i][j] == color) &&
+                (board[i-1][j+1] == color) &&
+                (board[i-2][j+2] == color) &&
+                (board[i-3][j+3] == color)) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+} 
