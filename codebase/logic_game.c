@@ -137,10 +137,34 @@ GameState handleGame(){
     // Handle interruptions (Blue and red button + red rotary encoder)
     currentSelection(); // Rotary encoder
     displayGame();
+
     // check red button (to select the right column)
+    if (wasPressed(BTN_RED)){
+        printf("Red button pressed\n");
+        if (board[currPosY][currPosX] == 'o'){
+            board[currPosY][currPosX] = currentPlayer == 0 ? 'y' : 'r';
+            currentPlayer = !currentPlayer;
+        }
+
+        // Use the isGameOver(char color) function
+        if (isGameOver('y')) {
+            printf("Yellow player wins!\n");
+            return STATE_GAME_OVER;
+        }
+        if (isGameOver('r')) {
+            printf("Red player wins!\n");
+            return STATE_GAME_OVER;
+        }
+    }
+    
     // check blue button (to go back to the main menu)
+    if (wasPressed(BTN_BLUE)){
+        printf("Blue button pressed\n");
+        // Go back to the main menu
+        return STATE_MENU;
+    }
+
     clearCurrSel();
-    // Use the isGameOver(char color) function
 
     return STATE_PLAYING;
 }
