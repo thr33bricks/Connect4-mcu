@@ -45,6 +45,9 @@ GameState handle_instructions(){
 GameState handle_game(){
     // Handle interruptions (Blue and red button + red rotary encoder)
     // display_game();
+    drawBackground(WHITE);
+    drawFillCircle(150, 150, 24, YELLOW);
+    return STATE_PLAYING;
 }
 GameState handle_game_over(){
     // Handle interruptions (Blue and green button)
