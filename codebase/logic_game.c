@@ -1,57 +1,143 @@
 #include "logic_game.h"
 #include "lcd.h"
+#include "rotary_encoder.h"
+#include <stdio.h>
 
-void init_game() {
-    init_lcd();
+void initBoard(){
+    for (uint8_t i = 0; i < 6; ++i){
+        for (uint8_t j = 0; j < 7; ++j){
+            board[i][j] = 'o';
+        }
+    }
 }
-void start_game(){
+
+void initGame() {
+    initEncoders();
+    initLcd();
+    initBoard();
+
+    currPosX = 0;
+    lastPosX = 0;
+    currPosY = 0;
+    currentPlayer = 0;
+    scoreYellow = 0;
+    scoreRed = 0;
+}
+
+void startGame(){
 
 }
 
-GameState handle_menu(){
+void displayMenu(){
+    
+}
+
+void displayInstructions(){
+
+}
+
+void currentSelection(){
+    int rot = getRotRed();
+    currPosX = rot % 7;
+
+    for (currPosY = 5; currPosY >= 0 ; --currPosY){
+        if(board[currPosY][currPosX] == 'o')
+            break;
+    }
+
+    if(board[currPosY][currPosX] == 'o')
+        board[currPosY][currPosX] = 'g';
+}
+
+void clearCurrSel(){
+    if(board[currPosY][currPosX] == 'g'){
+        board[currPosY][currPosX] = 'o';
+    }
+}
+
+void drawBoard(){
+    uint8_t boardX = 86;
+    uint8_t boardY = 45;
+    uint8_t holeSize = 20;
+    uint8_t space = 2;
+
+    // Draw background and blue board
     drawBackground(WHITE);
-    drawFillRect(50, 70, 430, 270, BLUE);
+    drawFillRect(boardX, boardY, 480-2*boardX, 265, BLUE);
 
-    drawFillCircle(100, 100, 24, WHITE);
-    drawCircle(100, 100, 24, BLACK);
+    //cut corners
+    drawFillRect(boardX, boardY, 20, 20, WHITE);
+    drawFillRect(480-boardX-20, boardY, 20, 20, WHITE);
+    drawFillRect(boardX, boardY+265-20, 20, 20, WHITE);
+    drawFillRect(480-boardX-20, boardY+265-20, 20, 20, WHITE);
+    drawFillCircle(boardX+20, boardY+20, 20, BLUE);
+    drawFillCircle(480-boardX-21, boardY+20, 20, BLUE);
+    drawFillCircle(boardX+20, 265+24, 20, BLUE);
+    drawFillCircle(480-boardX-21, 265+24, 20, BLUE);
+    
+    // Draw the board
+    for (uint8_t i = 0; i < 6; ++i){
+        for (uint8_t j = 0; j < 7; ++j){
+            uint16_t color = WHITE;
+            if(board[i][j] == 'y')
+                color = YELLOW;
+            else if(board[i][j] == 'r')
+                color = RED;
+            else if(board[i][j] == 'g')
+                color = GREEN;
+            
+            drawFillCircle(boardX+space+holeSize+5 + j*(space+2*holeSize), boardY+space+holeSize+5 + i*(space+2*holeSize), holeSize, BLACK);
+            drawFillCircle(boardX+space+holeSize+5 + j*(space+2*holeSize), boardY+space+holeSize+5 + i*(space+2*holeSize), holeSize-2, color);
+        }
+    }
+}
 
-    drawFillCircle(150, 150, 24, YELLOW);
+void drawScore(){
+    char score[20];
+    sprintf(score, "Score: %d-%d", scoreYellow, scoreRed);
+    drawText(2, 20, 10, score, BLACK, 1);
+}
 
-    drawCircle(200, 200, 50, YELLOW);
-    drawLine(0, 0, 480, 320, MAGENTA);
+void displayGame(){
+    currentSelection();
+    drawBoard();
+    drawScore();
     draw();
 
-    /*
-    // Handle interruptions (Red, Blue and Green button + red rotary encoder)
-    int was_red_clicked = 0;
-    while (1){
-        // Scanning red button
-        int now = is_red_clicked(spi_leds_base);
-        if (now && !was_red_clicked) {
-            return STATE_PLAYING;
-        }
-        was_red_clicked = now;
-        usleep(10000); // 10 ms
-    }
-    */
+    clearCurrSel();
+}
 
-    // display_menu();
+void displayGameOver(){
+
+}
+
+GameState handleMenu(){
+    displayMenu();
     return STATE_MENU;
 }
-GameState handle_instructions(){
+GameState handleInstructions(){
     // Handle interruptions (Blue button + green rotary encoder)
-    // display_instructions();
+    displayInstructions();
+
+    return STATE_INSTRUCTIONS;
 }
-GameState handle_game(){
+GameState handleGame(){
     // Handle interruptions (Blue and red button + red rotary encoder)
+<<<<<<< HEAD
     // display_game();
     drawBackground(WHITE);
     drawFillCircle(150, 150, 24, YELLOW);
+=======
+    displayGame();
+
+>>>>>>> b78dffd0ddec5e846cc1f11fdca61afa5fb21754
     return STATE_PLAYING;
 }
-GameState handle_game_over(){
+GameState handleGameOver(){
     // Handle interruptions (Blue and green button)
-    // display_game_over();
+    displayGameOver();
+
+    return STATE_GAME_OVER;
 }
 
 

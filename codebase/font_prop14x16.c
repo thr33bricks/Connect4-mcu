@@ -8770,4 +8770,5 @@ font_descriptor_t font_winFreeSystem14x16 = {
 	winFreeSystem14x16_bits,
 	0 /*winFreeSystem14x16_offset*/,
 	winFreeSystem14x16_width,
+   0,
 };

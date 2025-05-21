@@ -2,23 +2,20 @@
 #include "mzapo_parlcd.h"
 #include "mzapo_phys.h"
 #include "mzapo_regs.h"
+#include "font_types.h"
+#include <stdio.h>
+
 
 DisBuff disBuff;
 void *parlcd_mem_base;
 
 
-void init_lcd(){
+void initLcd(){
     parlcd_mem_base = map_phys_address(PARLCD_REG_BASE_PHYS, PARLCD_REG_SIZE, 0);
     parlcd_hx8357_init(parlcd_mem_base);
 
     disBuff.width = LCD_WIDTH;
     disBuff.height = LCD_HEIGHT;
-<<<<<<< HEAD
-=======
-    for (int i = 0; i < LCD_WIDTH * LCD_HEIGHT; i++) {
-        disBuff.data[i] = BLUE; 
-    }
->>>>>>> 4f742dfe08f020bc4918d57e11b286b21c4ee98b
 }
 
 void draw(){
@@ -26,8 +23,13 @@ void draw(){
 
     parlcd_write_cmd(parlcd_mem_base, 0x2C);
 
-    for (int i = 0; i < disBuff.height * disBuff.width; i++){
-        parlcd_write_data(parlcd_mem_base, data[i]);
+    // for (int i = 0; i < disBuff.height * disBuff.width; i++){
+    //     parlcd_write_data(parlcd_mem_base, data[i]);
+    // }
+
+    // Untested!
+    for (int i = 0; i < disBuff.height * disBuff.width; i+=2){
+        parlcd_write_data2x(parlcd_mem_base, data[i]<<16 | data[i+1]);
     }
 }
 
@@ -123,29 +125,70 @@ void drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color
     }
 }
 
-/*
-void display_menu(){
-    // Title : "Connect 4"
-    // Red Play button + number of games selection
-    // Green Instructions button
-    // Blue Close button 
+void drawPixelBig(int x, int y, int scale, uint16_t color) {
+    for (int dx = 0; dx < scale; dx++) {
+        for (int dy = 0; dy < scale; dy++) {
+            drawPixel(x + dx, y + dy, color);
+        }
+    }
 }
-void display_instructions(){
-    // Title : "Instructions"
-    // Instructions text
-    // Blue back button
-    // Green cursor
+
+// Size 1 and 2 are supported
+// Font 1: 8x16
+// Font 2: 14x16
+void drawText(uint8_t size, int x, int y, char *text, uint16_t color, uint8_t font) {
+    int cursorX = x;
+
+    // Select font by size (expandable)
+    font_descriptor_t *fontPtr = (font == 1) ? &font_rom8x16 : &font_winFreeSystem14x16;
+
+    // Sanity check
+    if (!fontPtr || !fontPtr->bits) return;
+
+    while (*text || text == 0) {
+        unsigned char c = *text++;
+        int charIndex = c - fontPtr->firstchar;
+
+        // Bounds check
+        if (charIndex < 0 || charIndex >= fontPtr->size) {
+            charIndex = fontPtr->defaultchar - fontPtr->firstchar;
+            if (charIndex < 0 || charIndex >= fontPtr->size) continue;
+        }
+
+        // Determine character width
+        int charWidth = (fontPtr->width) ? fontPtr->width[charIndex] : fontPtr->maxwidth;
+
+        // Determine bits per row (in 16-bit words)
+        int bw = (fontPtr->maxwidth + 15) / 16;
+
+        // Get pointer to character bitmap
+        const font_bits_t *charBitmap;
+        if (fontPtr->offset) {
+            // Use offset table
+            uint32_t offset = fontPtr->offset[charIndex];
+
+            // Optional: bounds check to be safe
+            if (offset >= fontPtr->bits_size) continue;
+
+            charBitmap = &fontPtr->bits[offset];
+        } else {
+            // Calculate offset manually if no offset table
+            charBitmap = &fontPtr->bits[charIndex * bw * fontPtr->height];
+        }
+
+        // Draw character bitmap
+        for (int row = 0; row < fontPtr->height; ++row) {
+            font_bits_t rowBits = *charBitmap++;
+
+            for (int col = 0; col < charWidth; ++col) {
+                if (rowBits & (1 << (15 - col))) {
+                    (size == 1) ? drawPixel(cursorX + col, y + row, color) :
+                        drawPixelBig(cursorX + col * size, y + row * size, size, color);
+                }
+            }
+        }
+
+        // Move cursor forward
+        cursorX += charWidth + ((size == 1) ? 1 : 8); // Add pixel spacing
+    }
 }
-void display_game(){
-    // Scores
-    // Grid
-    // Column selection with de red button & rotary encoder
-    // Blue menu button
-}
-void display_game_over(){
-    // Title : "Game over"
-    // Scores
-    // Blue "Menu" button
-    // Green "Play again" button
-}
-*/

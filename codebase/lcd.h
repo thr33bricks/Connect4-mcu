@@ -2,6 +2,7 @@
 #define LCD_H
 
 #include <stdint.h>
+#include <stdlib.h>
 
 #define LCD_WIDTH 480
 #define LCD_HEIGHT 320
@@ -29,7 +30,7 @@ typedef struct {
     uint16_t data[LCD_WIDTH * LCD_HEIGHT];
 } DisBuff;
 
-void init_lcd();
+void initLcd();
 void draw();
 void drawPixel(uint16_t x, uint16_t y, uint16_t color);
 void drawBackground(uint16_t color);
@@ -39,12 +40,6 @@ void drawCircle(uint16_t x0, uint16_t y0, uint16_t r, uint16_t color);
 void drawFillCircle(uint16_t x0, uint16_t y0, uint16_t r, uint16_t color);
 void drawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t color);
 void drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
-
-/*
-void display_menu();
-void display_instructions();
-void display_game();
-void display_game_over();
-*/
+void drawText(uint8_t size, int x, int y, char *text, uint16_t color, uint8_t font);
 
 #endif

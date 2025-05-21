@@ -9490,5 +9490,6 @@ font_descriptor_t font_rom8x16 = {
 	256,
 	rom8x16_bits,
 	0,
-	0
+	0,
+   0,
 };

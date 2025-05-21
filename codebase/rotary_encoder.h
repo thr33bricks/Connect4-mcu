@@ -1,17 +1,22 @@
 #ifndef ROTARY_ENCODER_H
 #define ROTARY_ENCODER_H
 
+#define REVERSE
+
+void *knobsBase;
+
 // Initialisation
-void init_encoders(void *base);
+void initEncoders();
 
 // For buttons
-int is_red_clicked(void *base);
-int is_green_clicked(void *base);
-int is_blue_clicked(void *base);
+uint8_t isRedClicked();
+uint8_t isGreenClicked();
+uint8_t isBlueClicked();
+// int clicked();
 
 // For rotations
-int get_rotation_red(void *base);
-int get_rotation_green(void *base);
-int get_rotation_blue(void *base);
+uint8_t getRotRed();
+uint8_t getRotGreen();
+uint8_t getRotBlue();
 
 #endif
