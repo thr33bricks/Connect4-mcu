@@ -11,14 +11,42 @@ uint64_t  _reading;
 uint8_t _wasPressed;
 uint8_t _wasReleased;
 
+// RED
+uint64_t _sampleTimeRed;
+uint64_t  _lastSampleRed;
+uint64_t  _thisSampleRed;
+uint64_t  _readingRed;
+uint8_t _wasPressedRed;
+uint8_t _wasReleasedRed;
+
+// GREEN
+uint64_t _sampleTimeGreen;
+uint64_t  _lastSampleGreen;
+uint64_t  _thisSampleGreen;
+uint64_t  _readingGreen;
+uint8_t _wasPressedGreen;
+uint8_t _wasReleasedGreen;
+
+// BLUE
+uint64_t _sampleTimeBlue;
+uint64_t  _lastSampleBlue;
+uint64_t  _thisSampleBlue;
+uint64_t  _readingBlue;
+uint8_t _wasPressedBlue;
+uint8_t _wasReleasedBlue;
+
 void *knobsBase;
 
 
 void initEncoders() {
     knobsBase = map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
 
-    _wasPressed  = 0;
-    _wasReleased = 0;
+    _wasPressedRed  = 0;
+    _wasReleasedRed = 0;
+    _wasPressedGreen  = 0;
+    _wasReleasedGreen = 0;
+    _wasPressedBlue  = 0;
+    _wasReleasedBlue = 0;
 }
 
 uint64_t millis() {
@@ -27,18 +55,6 @@ uint64_t millis() {
     return (uint64_t)(ts.tv_sec) * 1000 + (ts.tv_nsec / 1000000);
 }
 
-
-    // // Handle interruptions (Red, Blue and Green button + red rotary encoder)
-    // int was_red_clicked = 0;
-    // while (1){
-    //     // Scanning red button
-    //     int now = is_red_clicked(spi_leds_base);
-    //     if (now && !was_red_clicked) {
-    //         return STATE_PLAYING;
-    //     }
-    //     was_red_clicked = now;
-    //     usleep(10000); // 10 ms
-
 uint32_t getKnobsMem(){
     return *(volatile uint32_t *)(knobsBase + SPILED_REG_KNOBS_8BIT_o);
 }
@@ -46,15 +62,41 @@ uint32_t getKnobsMem(){
 // pass BTN_RED or BTN_GREEN or BTN_BLUE
 uint8_t isDown(uint8_t btn){
     if(btn == BTN_BLUE)
-        return ((getKnobsMem() & 0xff000000) >> 24) & 0x1;
+        return (getKnobsMem() >> 24) & 0x1;
     if(btn == BTN_GREEN)
-        return ((getKnobsMem() & 0xff000000) >> 25) & 0x1;
+        return (getKnobsMem() >> 25) & 0x1;
     if(btn == BTN_RED)
-        return ((getKnobsMem() & 0xff000000) >> 26) & 0x1;
+        return (getKnobsMem() >> 26) & 0x1;
     return 0;
 }
 
+// void setSampleTime(uint8_t btn) {
+//     if(btn == BTN_BLUE)
+//         _sampleTimeBlue = millis();
+//     if(btn == BTN_GREEN)
+//         _sampleTimeGreen = millis();
+//     if(btn == BTN_RED)
+//         _sampleTimeRed = millis();
+// }
+// void getSampleTime(uint8_t btn) {
+//     if(btn == BTN_BLUE)
+//         return _sampleTimeBlue;
+//     if(btn == BTN_GREEN)
+//         return _sampleTimeGreen;
+//     if(btn == BTN_RED)
+//         return _sampleTimeRed;
+//     return 0;
+// }
+
+    
+
 void _checkEdge(uint8_t btn) {
+    // uint64_t _sampleTime = get
+    // uint64_t _lastSample;
+    // uint64_t _thisSample;
+    // uint64_t _readingRed;
+    // uint8_t _wasPressedRed;
+    // uint8_t _wasReleasedRed;
 
 	// Take samples only on debounce intervals
 	if ((millis()-_sampleTime) > DEBOUNCE_INTERVAL) {
@@ -87,6 +129,7 @@ uint8_t wasPressed(uint8_t btn){
 
 	// Return _wasPressed state
 	return edge;
+    return 0;
 }
 
 uint8_t getRotRed() {

@@ -49,7 +49,9 @@ int main(int argc, char *argv[])
     }
   }
 
+  printf("Game initializing...\n");
   initGame();
+  printf("Game initialized\n");
 
   // Game FSM
   GameState state = STATE_MENU;
