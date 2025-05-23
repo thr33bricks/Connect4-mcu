@@ -50,11 +50,17 @@ void drawConnect4Title(){
 }
 
 void drawPlayButton(){
-    drawRect (100, 200, 200, 50, GREEN);
+    drawRect (100, 120, 200, 50, RED);
+    char title[10];
+    sprintf(title, "PLAY");
+    drawText(2, 110, 130, title, RED, 2);
 }
 
 void drawInstructionButton(){
-    drawRect (100, 120, 200, 50, RED);
+    drawRect (100, 200, 200, 50, GREEN);
+    char title[20];
+    sprintf(title, "INSTRUCTIONS");
+    drawText(2, 110, 210, title, GREEN, 2);
 }
 
 void displayMenu(){
@@ -74,7 +80,13 @@ void displayInstructions(){
 }
 
 void drawInstructionsTitle(){
-    drawText(2, 20, 10, "Instructions", GREEN, 1);
+    char title[10];
+    sprintf(title, "INSTRUCTIONS");
+    drawText(4, 100, 20, title, GREEN, 2);
+}
+
+void drawInstructionMenuButton(){
+    
 }
 
 void displayLongText(){
@@ -121,9 +133,7 @@ void displayLongText(){
     }
 }
 
-void drawInstructionMenuButton(){
-    
-}
+
 
 // =========== DISPLAY GAME ========= //
 void currentSelection(){
