@@ -4,12 +4,12 @@
 #include "mzapo_phys.h"
 #include <time.h>
 
-uint64_t _sampleTime;
-uint64_t  _lastSample;
-uint64_t  _thisSample;
-uint64_t  _reading;
-uint8_t _wasPressed;
-uint8_t _wasReleased;
+// uint64_t _sampleTime;
+// uint64_t  _lastSample;
+// uint64_t  _thisSample;
+// uint64_t  _reading;
+// uint8_t _wasPressed;
+// uint8_t _wasReleased;
 
 // RED
 uint64_t _sampleTimeRed;
@@ -70,51 +70,128 @@ uint8_t isDown(uint8_t btn){
     return 0;
 }
 
-// void setSampleTime(uint8_t btn) {
-//     if(btn == BTN_BLUE)
-//         _sampleTimeBlue = millis();
-//     if(btn == BTN_GREEN)
-//         _sampleTimeGreen = millis();
-//     if(btn == BTN_RED)
-//         _sampleTimeRed = millis();
-// }
-// void getSampleTime(uint8_t btn) {
-//     if(btn == BTN_BLUE)
-//         return _sampleTimeBlue;
-//     if(btn == BTN_GREEN)
-//         return _sampleTimeGreen;
-//     if(btn == BTN_RED)
-//         return _sampleTimeRed;
-//     return 0;
-// }
+void setSampleTime(uint8_t btn) {
+    if(btn == BTN_BLUE)
+        _sampleTimeBlue = millis();
+    if(btn == BTN_GREEN)
+        _sampleTimeGreen = millis();
+    if(btn == BTN_RED)
+        _sampleTimeRed = millis();
+}
+uint64_t getSampleTime(uint8_t btn) {
+    if(btn == BTN_BLUE)
+        return _sampleTimeBlue;
+    if(btn == BTN_GREEN)
+        return _sampleTimeGreen;
+    if(btn == BTN_RED)
+        return _sampleTimeRed;
+    return 0;
+}
 
-    
+void setLastSample(uint8_t btn) {
+    if(btn == BTN_BLUE)
+        _lastSampleBlue = _thisSampleBlue;
+    if(btn == BTN_GREEN)
+        _lastSampleGreen = _thisSampleGreen;
+    if(btn == BTN_RED)
+        _lastSampleRed = _thisSampleRed;
+}
+uint64_t getLastSample(uint8_t btn) {
+    if(btn == BTN_BLUE)
+        return _lastSampleBlue;
+    if(btn == BTN_GREEN)
+        return _lastSampleGreen;
+    if(btn == BTN_RED)
+        return _lastSampleRed;
+    return 0;
+}
+void setThisSample(uint8_t btn) {
+    if(btn == BTN_BLUE)
+        _thisSampleBlue = isDown(btn);
+    if(btn == BTN_GREEN)
+        _thisSampleGreen = isDown(btn);
+    if(btn == BTN_RED)
+        _thisSampleRed = isDown(btn);
+}
+uint64_t getThisSample(uint8_t btn) {
+    if(btn == BTN_BLUE)
+        return _thisSampleBlue;
+    if(btn == BTN_GREEN)
+        return _thisSampleGreen;
+    if(btn == BTN_RED)
+        return _thisSampleRed;
+    return 0;
+}
+void setReading(uint8_t btn) {
+    if(btn == BTN_BLUE)
+        _readingBlue = _thisSampleBlue;
+    if(btn == BTN_GREEN)
+        _readingGreen = _thisSampleGreen;
+    if(btn == BTN_RED)
+        _readingRed = _thisSampleRed;
+}
+uint64_t getReading(uint8_t btn) {
+    if(btn == BTN_BLUE)
+        return _readingBlue;
+    if(btn == BTN_GREEN)
+        return _readingGreen;
+    if(btn == BTN_RED)
+        return _readingRed;
+    return 0;
+}
+void setWasPressed(uint8_t btn, uint8_t val) {
+    if(btn == BTN_BLUE)
+        _wasPressedBlue = val;
+    if(btn == BTN_GREEN)
+        _wasPressedGreen = val;
+    if(btn == BTN_RED)
+        _wasPressedRed = val;
+}
+uint8_t getWasPressed(uint8_t btn) {
+    if(btn == BTN_BLUE)
+        return _wasPressedBlue;
+    if(btn == BTN_GREEN)
+        return _wasPressedGreen;
+    if(btn == BTN_RED)
+        return _wasPressedRed;
+    return 0;
+}
+void invertWasReleased(uint8_t btn) {
+    if(btn == BTN_BLUE)
+        _wasReleasedBlue = !_wasReleasedBlue;
+    if(btn == BTN_GREEN)
+        _wasReleasedGreen = !_wasReleasedGreen;
+    if(btn == BTN_RED)
+        _wasReleasedRed = !_wasReleasedRed;
+}
+uint8_t getWasReleased(uint8_t btn) {
+    if(btn == BTN_BLUE)
+        return _wasReleasedBlue;
+    if(btn == BTN_GREEN)
+        return _wasReleasedGreen;
+    if(btn == BTN_RED)
+        return _wasReleasedRed;
+    return 0;
+}
 
 void _checkEdge(uint8_t btn) {
-    // uint64_t _sampleTime = get
-    // uint64_t _lastSample;
-    // uint64_t _thisSample;
-    // uint64_t _readingRed;
-    // uint8_t _wasPressedRed;
-    // uint8_t _wasReleasedRed;
-
 	// Take samples only on debounce intervals
-	if ((millis()-_sampleTime) > DEBOUNCE_INTERVAL) {
+	if ((millis()-getSampleTime(btn)) > DEBOUNCE_INTERVAL) {
 		// Sample button state
-		_thisSample = isDown(btn);
+		setThisSample(btn);
 		// If it's the same as the last sample then we have a valid reading
-		if (_thisSample == _lastSample) {
+		if (getThisSample(btn) == getLastSample(btn)) {
 			// If there's a change, then set pressed/release states (inverse of each other)
-			if (_thisSample != _reading) {
-				_wasPressed = (_reading == 1) && (_thisSample == 0);
-				_wasReleased = !_wasPressed;
+			if (getThisSample(btn) != getReading(btn)) {
+				setWasPressed(btn, (getReading(btn) == 1) && (getThisSample(btn) == 0));
+				invertWasReleased(btn);
 			}
 			// Save this sample as a reading
-			_reading = _thisSample;
+			setReading(btn);
 		}
 		// Use this sample/time as reference for the next detection
-		_lastSample = _thisSample;
-		_sampleTime = millis();
+		setLastSample(btn);
+		setSampleTime(btn);
 	}
 
 }
@@ -124,12 +201,11 @@ uint8_t wasPressed(uint8_t btn){
 	_checkEdge(btn);
 	
 	// Save and reset edge state  (_wasPressed)
-	uint8_t edge = _wasPressed;
-	_wasPressed = 0;
+	uint8_t edge = getWasPressed(btn);
+	setWasPressed(btn, 0);
 
 	// Return _wasPressed state
 	return edge;
-    return 0;
 }
 
 uint8_t getRotRed() {
