@@ -12,7 +12,7 @@ char board[6][7];
 // Game variables
 uint8_t lastPosX;
 uint8_t currPosX;
-uint8_t currPosY;
+int8_t currPosY;
 uint8_t currentPlayer; // 0 for yellow, 1 for red
 uint8_t scoreYellow;
 uint8_t scoreRed;
@@ -118,6 +118,8 @@ void currentSelection(){
     currPosX = rot % 7;
 
     for (currPosY = 5; currPosY >= 0 ; --currPosY){
+        if(currPosY == -1)
+            return;
         if(board[currPosY][currPosX] == 'o')
             break;
     }
@@ -127,6 +129,8 @@ void currentSelection(){
 }
 
 void clearCurrSel(){
+    if(currPosY == -1)
+        return;
     if(board[currPosY][currPosX] == 'g'){
         board[currPosY][currPosX] = 'o';
     }
@@ -188,28 +192,42 @@ void displayGameOver(){
 //======= GAME STATES ============//
 GameState handleMenu(){
     displayMenu();
+
+    // Start game
+    if (wasPressed(BTN_RED))
+        return STATE_PLAYING;
+
+    // Instructions
+    if (wasPressed(BTN_GREEN))
+        return STATE_INSTRUCTIONS;
+
     return STATE_MENU;
 }
 GameState handleInstructions(){
-    // Handle interruptions (Blue button + green rotary encoder)
     displayInstructions();
+
+    // MAIN MENU
+    if (wasPressed(BTN_BLUE))
+        return STATE_MENU;
 
     return STATE_INSTRUCTIONS;
 }
 GameState handleGame(){
-    // Handle interruptions (Blue and red button + red rotary encoder)
-    currentSelection(); // Rotary encoder
+    currentSelection(); // Check rotary encoder
     displayGame();
+    clearCurrSel();
 
-    // check red button (to select the right column)
+    // red button for placing disc
     if (wasPressed(BTN_RED)){
-        printf("Red button pressed\n");
+        // Check if the column is full
+        if(currPosY == -1)
+            return STATE_PLAYING;
+
         if (board[currPosY][currPosX] == 'o'){
             board[currPosY][currPosX] = currentPlayer == 0 ? 'y' : 'r';
             currentPlayer = !currentPlayer;
         }
 
-        // Use the isGameOver(char color) function
         if (isGameOver('y')) {
             printf("Yellow player wins!\n");
             return STATE_GAME_OVER;
@@ -220,20 +238,19 @@ GameState handleGame(){
         }
     }
 
-    // check blue button (to go back to the main menu)
+    // MAIN MENU
     if (wasPressed(BTN_BLUE)){
-        printf("Blue button pressed\n");
-        // Go back to the main menu
         return STATE_MENU;
     }
-
-    clearCurrSel();
 
     return STATE_PLAYING;
 }
 GameState handleGameOver(){
-    // Handle interruptions (Blue and green button)
     displayGameOver();
+
+    // MAIN MENU
+    if (wasPressed(BTN_BLUE))
+        return STATE_MENU;
 
     return STATE_GAME_OVER;
 }

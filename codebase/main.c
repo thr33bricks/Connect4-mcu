@@ -59,7 +59,6 @@ int main(int argc, char *argv[])
     switch (state) {
       case STATE_MENU:
         state = handleMenu();
-        //state = STATE_PLAYING;
         break;
       case STATE_INSTRUCTIONS:
         state = handleInstructions();
