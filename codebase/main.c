@@ -49,11 +49,6 @@ int main(int argc, char *argv[])
     }
   }
 
-  /*
-  init_encoders(spi_leds_mem_base);
-  init_speaker(spi_leds_mem_base);
-  init_leds(spi_leds_mem_base);
-  */
   printf("Game initializing...\n");
   initGame();
   printf("Game initialized\n");

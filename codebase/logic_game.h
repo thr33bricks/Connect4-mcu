@@ -26,6 +26,10 @@ void drawConnect4Title();
 void drawPlayButton();
 void drawInstructionButton();
 
+void drawInstructionsTitle();
+void displayLongText();
+void drawInstructionMenuButton();
+
 GameState handleMenu();
 GameState handleInstructions();
 GameState handleGame();

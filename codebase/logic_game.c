@@ -50,11 +50,17 @@ void drawConnect4Title(){
 }
 
 void drawPlayButton(){
-    drawRect (100, 200, 200, 50, GREEN);
+    drawRect (100, 120, 200, 50, RED);
+    char title[10];
+    sprintf(title, "PLAY");
+    drawText(2, 110, 130, title, RED, 2);
 }
 
 void drawInstructionButton(){
-    drawRect (100, 120, 200, 50, RED);
+    drawRect (100, 200, 200, 50, GREEN);
+    char title[20];
+    sprintf(title, "INSTRUCTIONS");
+    drawText(2, 110, 210, title, GREEN, 2);
 }
 
 void displayMenu(){
@@ -68,8 +74,43 @@ void displayMenu(){
 
 //====== DISPLAY INSTRUCTIONS ============//
 void displayInstructions(){
-
+    drawInstructionsTitle();
+    displayLongText();
+    drawInstructionMenuButton();
 }
+
+void drawInstructionsTitle(){
+    char title[10];
+    sprintf(title, "INSTRUCTIONS");
+    drawText(4, 100, 20, title, GREEN, 2);
+}
+
+void drawInstructionMenuButton(){
+    
+}
+
+void displayLongText(){
+    const char *instructions_text[] = {
+        "Welcome to Connect 4!",
+        "",
+        "This is a two-player game.",
+        "Players take turns dropping",
+        "colored tokens into a grid.",
+        "",
+        "Goal: align 4 of your tokens",
+        "horizontally, vertically, or",
+        "diagonally before your opponent.",
+        "",
+        "Controls:",
+        "- Use the red encoder to move",
+        "  the token left/right.",
+        "- Press to drop your token.",
+        "",
+        "Good luck and have fun!"
+    };
+}
+
+
 
 // =========== DISPLAY GAME ========= //
 void currentSelection(){
@@ -148,6 +189,7 @@ void displayGameOver(){
 
 }
 
+//======= GAME STATES ============//
 GameState handleMenu(){
     displayMenu();
 

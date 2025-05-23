@@ -69,7 +69,7 @@
 
 #define AUDIOPWM_REG_CR_o               0x0000
 #define AUDIOPWM_REG_PWMPER_o           0x0008
-#define AUDIOPWM_REG_PWM_o              0x000C
+#define AUDIOPWM_REG_PWM_o              0x000C  
 
 /* Optional DC Motor Simple Driver Peripherals for PSR Subject */
 
