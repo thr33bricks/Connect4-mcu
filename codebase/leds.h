@@ -9,6 +9,7 @@ void setLed2(uint32_t color);
 void setLedsLine(uint32_t state);
 
 void setPlayerLed(uint8_t current_player);
+void setPlayerLedOff();
 void gameOverLEDS();
 
 #endif // LEDS_H

@@ -14,27 +14,33 @@ typedef enum {
 
 void initBoard();
 void initGame();
-void startGame();
 void displayMenu();
 void displayInstructions();
 void drawBoard();
-void drawScore();
+void drawScore(uint16_t x, uint16_t y);
+void drawHome(uint16_t x, uint16_t y);
 void displayGame();
 void displayGameOver();
 
 void drawConnect4Title();
-void drawPlayButton();
-void drawInstructionButton();
+void drawPlayButton(uint16_t x, uint16_t y);
+void drawInstructionButton(uint16_t x, uint16_t y);
 
 void drawInstructionsTitle();
 void displayLongText();
 void drawInstructionMenuButton();
+
+void playScrollSound();
+void playClickSound();
+void playKorobeiniki();
 
 GameState handleMenu();
 GameState handleInstructions();
 GameState handleGame();
 GameState handleGameOver();
 
-int isGameOver(char color);
+uint8_t checkTie();
+uint8_t isGameOver();
+uint8_t checkWinner(char color);
 
 #endif

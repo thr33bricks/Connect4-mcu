@@ -49,9 +49,11 @@ int main(int argc, char *argv[])
     }
   }
 
-  printf("Game initializing...\n");
-  initGame();
-  printf("Game initialized\n");
+  initEncoders();
+  initLcd();
+  initSpeaker();
+  initLeds();
+  printf("Peripherals initialized\n");
 
   // Game FSM
   GameState state = STATE_MENU;
@@ -71,6 +73,8 @@ int main(int argc, char *argv[])
         break;
     }
   }
+
+  printf("Goodbye!\n");
 
   /* Release the lock */
   serialize_unlock();
