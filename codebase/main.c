@@ -49,12 +49,6 @@ int main(int argc, char *argv[])
     }
   }
 
-  /*
-  init_encoders(spi_leds_mem_base);
-  init_speaker(spi_leds_mem_base);
-  init_leds(spi_leds_mem_base);
-  */
-
   initGame();
 
   // Game FSM
@@ -63,7 +57,7 @@ int main(int argc, char *argv[])
     switch (state) {
       case STATE_MENU:
         state = handleMenu();
-        state = STATE_PLAYING;
+        //state = STATE_PLAYING;
         break;
       case STATE_INSTRUCTIONS:
         state = handleInstructions();

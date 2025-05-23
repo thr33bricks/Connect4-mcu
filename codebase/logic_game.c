@@ -66,7 +66,61 @@ void drawInstructionButton(){
 
 //====== DISPLAY INSTRUCTIONS ============//
 void displayInstructions(){
+    drawInstructionsTitle();
+    displayLongText();
+    drawInstructionMenuButton();
+}
 
+void drawInstructionsTitle(){
+    drawText(2, 20, 10, "Instructions", GREEN, 1);
+}
+
+void displayLongText(){
+    const char *instructions_text[] = {
+        "Welcome to Connect 4!",
+        "",
+        "This is a two-player game.",
+        "Players take turns dropping",
+        "colored tokens into a grid.",
+        "",
+        "Goal: align 4 of your tokens",
+        "horizontally, vertically, or",
+        "diagonally before your opponent.",
+        "",
+        "Controls:",
+        "- Use the red encoder to move",
+        "  the token left/right.",
+        "- Press to drop your token.",
+        "",
+        "Good luck and have fun!"
+    };
+    const int instruction_lines = sizeof(instructions_text) / sizeof(instructions_text[0]);
+    
+    static int scroll_offset = 0; // scroll position
+    int max_visible_lines = 6;
+    int y_start = 60;
+    int line_spacing = 20;
+
+    // Ajust the scroll
+    int scroll_input = getRotGreen();
+    scroll_offset = scroll_input;
+
+    // Limit the scroll
+    if (scroll_offset < 0) scroll_offset = 0;
+    if (scroll_offset > instruction_lines - max_visible_lines)
+        scroll_offset = instruction_lines - max_visible_lines;
+
+    // Display visible instructions lines
+    for (int i = 0; i < max_visible_lines; ++i) {
+        int line_index = scroll_offset + i;
+        if (line_index < instruction_lines) {
+            drawText(4, y_start + i * line_spacing, 16, instructions_text[line_index], BLACK, 1);
+        }
+    }
+}
+
+void drawInstructionMenuButton(){
+    
 }
 
 // =========== DISPLAY GAME ========= //
@@ -142,6 +196,7 @@ void displayGameOver(){
 
 }
 
+//======= GAME STATES ============//
 GameState handleMenu(){
     displayMenu();
     return STATE_MENU;
