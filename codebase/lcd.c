@@ -45,11 +45,11 @@ void drawBackground(uint16_t color){
     }
 }
 
-void drawRect (uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color){
-    drawLine(x, y, x+width, y, color);
-    drawLine(x, y, x, y+height, color);
-    drawLine(x, y+height, x+width, y+height, color);
-    drawLine(x+width, y, x+width, y+height, color);
+void drawRect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color) {
+    drawLine(x, y, x + width - 1, y, color);
+    drawLine(x, y, x, y + height - 1, color);
+    drawLine(x, y + height - 1, x + width - 1, y + height - 1, color);
+    drawLine(x + width - 1, y, x + width - 1, y + height - 1, color);
 }
 
 void drawFillRect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color){
@@ -101,11 +101,11 @@ void drawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x
 }
 
 void drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color){
-    uint16_t dx = abs(x2 - x1);
-    uint16_t dy = abs(y2 - y1);
-    uint16_t sx = (x1 < x2) ? 1 : -1;
-    uint16_t sy = (y1 < y2) ? 1 : -1;
-    uint16_t err = dx - dy;
+    int32_t dx = abs(x2 - x1);
+    int32_t dy = abs(y2 - y1);
+    int32_t sx = (x1 < x2) ? 1 : -1;
+    int32_t sy = (y1 < y2) ? 1 : -1;
+    int32_t err = dx - dy;
 
     while (1) {
         drawPixel(x1, y1, color);
@@ -189,6 +189,6 @@ void drawText(uint8_t size, int x, int y, char *text, uint16_t color, uint8_t fo
         }
 
         // Move cursor forward
-        cursorX += charWidth + ((size == 1) ? 1 : 8); // Add pixel spacing
+        cursorX += charWidth + size*((size == 1) ? 2 : 6); // Add pixel spacing
     }
 }

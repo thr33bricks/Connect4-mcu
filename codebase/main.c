@@ -54,8 +54,9 @@ int main(int argc, char *argv[])
   init_speaker(spi_leds_mem_base);
   init_leds(spi_leds_mem_base);
   */
-
+  printf("Game initializing...\n");
   initGame();
+  printf("Game initialized\n");
 
   // Game FSM
   GameState state = STATE_MENU;
@@ -63,7 +64,7 @@ int main(int argc, char *argv[])
     switch (state) {
       case STATE_MENU:
         state = handleMenu();
-        state = STATE_PLAYING;
+        //state = STATE_PLAYING;
         break;
       case STATE_INSTRUCTIONS:
         state = handleInstructions();

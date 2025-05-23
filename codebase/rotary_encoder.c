@@ -4,6 +4,13 @@
 #include "mzapo_phys.h"
 #include <time.h>
 
+uint64_t _sampleTime;
+uint64_t  _lastSample;
+uint64_t  _thisSample;
+uint64_t  _reading;
+uint8_t _wasPressed;
+uint8_t _wasReleased;
+
 // RED
 uint64_t _sampleTimeRed;
 uint64_t  _lastSampleRed;
@@ -81,11 +88,7 @@ uint8_t isDown(uint8_t btn){
 //     return 0;
 // }
 
-    // _lastSample;
-    // uint64_t _thisSample;
-    // uint64_t _readingRed;
-    // uint8_t _wasPressedRed;
-    // uint8_t _wasReleasedRed;
+    
 
 void _checkEdge(uint8_t btn) {
     // uint64_t _sampleTime = get
@@ -95,37 +98,37 @@ void _checkEdge(uint8_t btn) {
     // uint8_t _wasPressedRed;
     // uint8_t _wasReleasedRed;
 
-	// // Take samples only on debounce intervals
-	// if ((millis()-_sampleTime) > DEBOUNCE_INTERVAL) {
-	// 	// Sample button state
-	// 	_thisSample = isDown(btn);
-	// 	// If it's the same as the last sample then we have a valid reading
-	// 	if (_thisSample == _lastSample) {
-	// 		// If there's a change, then set pressed/release states (inverse of each other)
-	// 		if (_thisSample != _reading) {
-	// 			_wasPressed = (_reading == 1) && (_thisSample == 0);
-	// 			_wasReleased = !_wasPressed;
-	// 		}
-	// 		// Save this sample as a reading
-	// 		_reading = _thisSample;
-	// 	}
-	// 	// Use this sample/time as reference for the next detection
-	// 	_lastSample = _thisSample;
-	// 	_sampleTime = millis();
-	// }
+	// Take samples only on debounce intervals
+	if ((millis()-_sampleTime) > DEBOUNCE_INTERVAL) {
+		// Sample button state
+		_thisSample = isDown(btn);
+		// If it's the same as the last sample then we have a valid reading
+		if (_thisSample == _lastSample) {
+			// If there's a change, then set pressed/release states (inverse of each other)
+			if (_thisSample != _reading) {
+				_wasPressed = (_reading == 1) && (_thisSample == 0);
+				_wasReleased = !_wasPressed;
+			}
+			// Save this sample as a reading
+			_reading = _thisSample;
+		}
+		// Use this sample/time as reference for the next detection
+		_lastSample = _thisSample;
+		_sampleTime = millis();
+	}
 
 }
 
 uint8_t wasPressed(uint8_t btn){
-	// // Update edge detection
-	// _checkEdge(btn);
+	// Update edge detection
+	_checkEdge(btn);
 	
-	// // Save and reset edge state  (_wasPressed)
-	// uint8_t edge = _wasPressed;
-	// _wasPressed = 0;
+	// Save and reset edge state  (_wasPressed)
+	uint8_t edge = _wasPressed;
+	_wasPressed = 0;
 
-	// // Return _wasPressed state
-	// return edge;
+	// Return _wasPressed state
+	return edge;
     return 0;
 }
 

@@ -43,24 +43,26 @@ void startGame(){
 
 }
 //====== DISPLAY MENU ============//
-void displayMenu(){
-    drawConnect4Title();
-    drawPlayButton();
-    drawInstructionButton();
-}
-
 void drawConnect4Title(){
     char title[10];
-    title="Connect 4";
-    drawText(4, 100, 20, title, RED, 1);
+    sprintf(title, "Connect 4");
+    drawText(4, 100, 20, title, RED, 2);
 }
 
 void drawPlayButton(){
-    drawRect (100, 200, 50, 50, RED);
+    drawRect (100, 200, 200, 50, GREEN);
 }
 
 void drawInstructionButton(){
-    drawRect (100, 400, 50, 50, GREEN);
+    drawRect (100, 120, 200, 50, RED);
+}
+
+void displayMenu(){
+    drawBackground(WHITE);
+    drawConnect4Title();
+    drawPlayButton();
+    drawInstructionButton();
+    draw();
 }
 
 
@@ -175,7 +177,7 @@ GameState handleGame(){
             return STATE_GAME_OVER;
         }
     }
-    
+
     // check blue button (to go back to the main menu)
     if (wasPressed(BTN_BLUE)){
         printf("Blue button pressed\n");

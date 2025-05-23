@@ -28,7 +28,7 @@ TARGET_USER ?= root
 #SSH_OPTIONS=-o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o "Port=2222"
 #SSH_GDB_TUNNEL_REQUIRED=y
 #SSH_OPTIONS=-i /opt/zynq/ssh-connect/mzapo-root-key
-SSH_OPTIONS=-o 'ProxyJump=yordayor@postel.felk.cvut.cz'
+#SSH_OPTIONS=-o 'ProxyJump=yordayor@postel.felk.cvut.cz'
 
 OBJECTS += $(filter %.o,$(SOURCES:%.c=%.o))
 OBJECTS += $(filter %.o,$(SOURCES:%.cpp=%.o))
