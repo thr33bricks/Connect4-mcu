@@ -104,23 +104,26 @@ void displayMenu(){
 
 //====== DISPLAY INSTRUCTIONS ============//
 void displayInstructions(){
-    drawInstructionsTitle();
-    displayLongText();
-    drawInstructionMenuButton();
-}
-
-void drawInstructionsTitle(){
-    char title[13];
-    sprintf(title, "INSTRUCTIONS");
-    drawText(4, 100, 20, title, GREEN, 2);
-}
-
-void drawInstructionMenuButton(){
+    drawBackground(WHITE);
+    int SupLineDisplayed =0;
+    //int SupLineDisplayed = greenRotaryEncoderPosition(); 
     
+    displayLongText(SupLineDisplayed);
+    if (SupLineDisplayed == 13){
+        drawHome(425, 275);
+    }
 }
 
-void displayLongText(){
+int greenRotaryEncoderPosition(){   // TO DO ++++++++++++++++++++++++++++++
+    int SupLineDisplayed; // Should be >=0 and <=13
+
+    return SupLineDisplayed;
+}
+
+void displayLongText(int SupLineDisplayed){
     const char *instructions_text[] = {
+        // 17 instructions lines
+        "INSTRUCTIONS",
         "Welcome to Connect 4!",
         "",
         "This is a two-player game.",
@@ -138,6 +141,14 @@ void displayLongText(){
         "",
         "Good luck and have fun!"
     };
+    // 5 lines are displayed 
+    int x=20;
+    int y=10;
+    for (int i=SupLineDisplayed; i<SupLineDisplayed+5;i++){
+        drawText(1, x, y, instructions_text[i], BLACK, 1);
+        y+=40;
+    }
+
 }
 
 // =========== DISPLAY GAME ========= //

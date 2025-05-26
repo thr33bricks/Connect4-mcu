@@ -26,9 +26,8 @@ void drawConnect4Title();
 void drawPlayButton(uint16_t x, uint16_t y);
 void drawInstructionButton(uint16_t x, uint16_t y);
 
-void drawInstructionsTitle();
 void displayLongText();
-void drawInstructionMenuButton();
+int greenRotaryEncoderPosition();
 
 void playScrollSound();
 void playClickSound();
