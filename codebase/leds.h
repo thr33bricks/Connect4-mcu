@@ -12,4 +12,4 @@ void setPlayerLed(uint8_t current_player);
 void setPlayerLedOff();
 void gameOverLEDS();
 
-#endif // LEDS_H
+#endif

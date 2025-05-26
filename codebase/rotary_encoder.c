@@ -1,8 +1,12 @@
 #define _POSIX_C_SOURCE 199309L
 #include "rotary_encoder.h"
+
+#include <time.h>
+#include <stdlib.h>
+
 #include "mzapo_regs.h"
 #include "mzapo_phys.h"
-#include <time.h>
+#include "settings.h"
 
 // BTN RED
 uint64_t _sampleTimeRed;
@@ -59,115 +63,115 @@ uint32_t getKnobsMem(){
 
 // pass BTN_RED or BTN_GREEN or BTN_BLUE
 uint8_t isDown(uint8_t btn){
-    if(btn == BTN_BLUE)
+    if(btn == ROT_BLUE)
         return (getKnobsMem() >> 24) & 0x1;
-    if(btn == BTN_GREEN)
+    if(btn == ROT_GREEN)
         return (getKnobsMem() >> 25) & 0x1;
-    if(btn == BTN_RED)
+    if(btn == ROT_RED)
         return (getKnobsMem() >> 26) & 0x1;
     return 0;
 }
 
 void setSampleTime(uint8_t btn) {
-    if(btn == BTN_BLUE)
+    if(btn == ROT_BLUE)
         _sampleTimeBlue = millis();
-    if(btn == BTN_GREEN)
+    if(btn == ROT_GREEN)
         _sampleTimeGreen = millis();
-    if(btn == BTN_RED)
+    if(btn == ROT_RED)
         _sampleTimeRed = millis();
 }
 uint64_t getSampleTime(uint8_t btn) {
-    if(btn == BTN_BLUE)
+    if(btn == ROT_BLUE)
         return _sampleTimeBlue;
-    if(btn == BTN_GREEN)
+    if(btn == ROT_GREEN)
         return _sampleTimeGreen;
-    if(btn == BTN_RED)
+    if(btn == ROT_RED)
         return _sampleTimeRed;
     return 0;
 }
 
 void setLastSample(uint8_t btn) {
-    if(btn == BTN_BLUE)
+    if(btn == ROT_BLUE)
         _lastSampleBlue = _thisSampleBlue;
-    if(btn == BTN_GREEN)
+    if(btn == ROT_GREEN)
         _lastSampleGreen = _thisSampleGreen;
-    if(btn == BTN_RED)
+    if(btn == ROT_RED)
         _lastSampleRed = _thisSampleRed;
 }
 uint64_t getLastSample(uint8_t btn) {
-    if(btn == BTN_BLUE)
+    if(btn == ROT_BLUE)
         return _lastSampleBlue;
-    if(btn == BTN_GREEN)
+    if(btn == ROT_GREEN)
         return _lastSampleGreen;
-    if(btn == BTN_RED)
+    if(btn == ROT_RED)
         return _lastSampleRed;
     return 0;
 }
 void setThisSample(uint8_t btn) {
-    if(btn == BTN_BLUE)
+    if(btn == ROT_BLUE)
         _thisSampleBlue = isDown(btn);
-    if(btn == BTN_GREEN)
+    if(btn == ROT_GREEN)
         _thisSampleGreen = isDown(btn);
-    if(btn == BTN_RED)
+    if(btn == ROT_RED)
         _thisSampleRed = isDown(btn);
 }
 uint64_t getThisSample(uint8_t btn) {
-    if(btn == BTN_BLUE)
+    if(btn == ROT_BLUE)
         return _thisSampleBlue;
-    if(btn == BTN_GREEN)
+    if(btn == ROT_GREEN)
         return _thisSampleGreen;
-    if(btn == BTN_RED)
+    if(btn == ROT_RED)
         return _thisSampleRed;
     return 0;
 }
 void setReading(uint8_t btn) {
-    if(btn == BTN_BLUE)
+    if(btn == ROT_BLUE)
         _readingBlue = _thisSampleBlue;
-    if(btn == BTN_GREEN)
+    if(btn == ROT_GREEN)
         _readingGreen = _thisSampleGreen;
-    if(btn == BTN_RED)
+    if(btn == ROT_RED)
         _readingRed = _thisSampleRed;
 }
 uint64_t getReading(uint8_t btn) {
-    if(btn == BTN_BLUE)
+    if(btn == ROT_BLUE)
         return _readingBlue;
-    if(btn == BTN_GREEN)
+    if(btn == ROT_GREEN)
         return _readingGreen;
-    if(btn == BTN_RED)
+    if(btn == ROT_RED)
         return _readingRed;
     return 0;
 }
 void setWasPressed(uint8_t btn, uint8_t val) {
-    if(btn == BTN_BLUE)
+    if(btn == ROT_BLUE)
         _wasPressedBlue = val;
-    if(btn == BTN_GREEN)
+    if(btn == ROT_GREEN)
         _wasPressedGreen = val;
-    if(btn == BTN_RED)
+    if(btn == ROT_RED)
         _wasPressedRed = val;
 }
 uint8_t getWasPressed(uint8_t btn) {
-    if(btn == BTN_BLUE)
+    if(btn == ROT_BLUE)
         return _wasPressedBlue;
-    if(btn == BTN_GREEN)
+    if(btn == ROT_GREEN)
         return _wasPressedGreen;
-    if(btn == BTN_RED)
+    if(btn == ROT_RED)
         return _wasPressedRed;
     return 0;
 }
 void invertWasReleased(uint8_t btn) {
-    if(btn == BTN_BLUE)
+    if(btn == ROT_BLUE)
         _wasReleasedBlue = !_wasReleasedBlue;
-    if(btn == BTN_GREEN)
+    if(btn == ROT_GREEN)
         _wasReleasedGreen = !_wasReleasedGreen;
-    if(btn == BTN_RED)
+    if(btn == ROT_RED)
         _wasReleasedRed = !_wasReleasedRed;
 }
 uint8_t getWasReleased(uint8_t btn) {
-    if(btn == BTN_BLUE)
+    if(btn == ROT_BLUE)
         return _wasReleasedBlue;
-    if(btn == BTN_GREEN)
+    if(btn == ROT_GREEN)
         return _wasReleasedGreen;
-    if(btn == BTN_RED)
+    if(btn == ROT_RED)
         return _wasReleasedRed;
     return 0;
 }
@@ -207,7 +211,7 @@ uint8_t wasPressed(uint8_t btn){
 }
 
 uint8_t getRotRed() {
-    #ifdef REVERSE
+    #ifdef REVERSE_ROT
     return 63-((getKnobsMem() & 0x00ff0000) >> 18);
     #else
     return (getKnobsMem() & 0x00ff0000) >> 18;
@@ -215,7 +219,7 @@ uint8_t getRotRed() {
 }
 
 uint8_t getRotGreen() {
-    #ifdef REVERSE
+    #ifdef REVERSE_ROT
     return 63-((getKnobsMem() & 0x0000ff00) >> 10);
     #else
     return (getKnobsMem() & 0x0000ff00) >> 10;
@@ -223,7 +227,7 @@ uint8_t getRotGreen() {
 }
 
 uint8_t getRotBlue() {
-    #ifdef REVERSE
+    #ifdef REVERSE_ROT
     return 63-((getKnobsMem() & 0x000000ff) >> 2);
     #else
     return (getKnobsMem() & 0x000000ff) >> 2;

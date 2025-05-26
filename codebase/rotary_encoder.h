@@ -2,19 +2,13 @@
 #define ROTARY_ENCODER_H
 
 #include <stdint.h>
-#include <stdlib.h>
-
-//#define REVERSE
-
-#define BTN_RED   1
-#define BTN_GREEN 2
-#define BTN_BLUE  3
 
 #define ROT_RED   1
 #define ROT_GREEN 2
 #define ROT_BLUE  3
 
 #define DEBOUNCE_INTERVAL 14
+
 
 // Initialisation
 void initEncoders();

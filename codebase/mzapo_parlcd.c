@@ -14,14 +14,13 @@
 
 #define _POSIX_C_SOURCE 200112L
 
-//#define HX8357_B
-//#define ILI9481
-
 #include <stdint.h>
 #include <time.h>
 
 #include "mzapo_parlcd.h"
 #include "mzapo_regs.h"
+#include "settings.h"
+
 
 void parlcd_write_cr(unsigned char *parlcd_mem_base, uint16_t data)
 {

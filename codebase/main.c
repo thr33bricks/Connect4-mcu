@@ -11,27 +11,33 @@
 
 #define _POSIX_C_SOURCE 200112L
 
-#include <stdlib.h>
 #include <stdio.h>
-#include <stdint.h>
-#include <time.h>
-#include <unistd.h>
 
-#include "mzapo_parlcd.h"
-#include "mzapo_phys.h"
-#include "mzapo_regs.h"
 #include "serialize_lock.h"
-
 #include "logic_game.h"
-
+#include "settings.h"
 #include "lcd.h"
 #include "rotary_encoder.h"
 #include "speaker.h"
 #include "leds.h"
 
+int8_t step = -1;
+uint8_t currGrad = END_GRAD;
+uint64_t lastUpdate = 0;
 
-int main(int argc, char *argv[])
-{
+void updateGrad(){
+  uint64_t now = millis();
+  if (now - lastUpdate >= INTERVAL_GRAD) {
+    lastUpdate = now;
+
+    if (currGrad < END_GRAD && currGrad > START_GRAD)
+      currGrad += step;
+    else
+      step *= -1;
+  }
+}
+
+int main(int argc, char *argv[]){
   /* Serialize execution of applications */
 
   /* Try to acquire lock the first */
@@ -51,9 +57,13 @@ int main(int argc, char *argv[])
   initLeds();
   printf("Peripherals initialized\n");
 
+  lastUpdate = millis();
+
   // Game FSM
   GameState state = STATE_MENU;
   while (1) {
+    updateGrad();
+
     switch (state) {
       case STATE_MENU:
         state = handleMenu();
@@ -62,7 +72,7 @@ int main(int argc, char *argv[])
         state = handleInstructions();
         break;
       case STATE_PLAYING:
-        state = handleGame();
+        state = handleGame(currGrad);
         break;
       case STATE_GAME_OVER:
         state = handleGameOver();

@@ -2,7 +2,6 @@
 #define LCD_H
 
 #include <stdint.h>
-#include <stdlib.h>
 
 #define LCD_WIDTH 480
 #define LCD_HEIGHT 320
@@ -11,6 +10,9 @@
 #define BLACK 0x0000
 #define RED 0xF800
 #define GREEN 0x07E0
+#define LIGHT_GREEN 0xd7fb
+#define DARK_GREEN 0x14a5
+#define MID_GREEN 0x6e8f
 #define BLUE 0x001F
 #define YELLOW 0xFFE0
 #define CYAN 0x07FF
@@ -18,9 +20,9 @@
 #define PINK 0xFC99
 #define ORANGE 0xFBE4
 #define PURPLE 0x8000
-#define GRAY 0x7BEF
+#define GRAY 0x7BCF
 #define BROWN 0xA145
-#define LIGHT_GRAY 0xD3DF
+#define LIGHT_GRAY 0xd6da
 #define DARK_GRAY 0x7BEF
 
 
@@ -41,5 +43,6 @@ void drawFillCircle(uint16_t x0, uint16_t y0, uint16_t r, uint16_t color);
 void drawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t color);
 void drawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
 void drawText(uint8_t size, int x, int y, char *text, uint16_t color, uint8_t font);
+void setShadow(uint8_t shadow, uint16_t color);
 
 #endif

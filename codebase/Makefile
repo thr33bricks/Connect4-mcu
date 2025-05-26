@@ -12,6 +12,8 @@ LDLIBS += -lrt -lpthread
 SOURCES = main.c mzapo_phys.c mzapo_parlcd.c serialize_lock.c
 SOURCES += font_prop14x16.c font_rom8x16.c
 SOURCES += logic_game.c lcd.c rotary_encoder.c speaker.c leds.c
+SOURCES += music.c page_game_over.c page_game.c page_instr.c
+SOURCES += page_menu.c logic_misc.c
 
 TARGET_EXE = connect4
 #TARGET_IP ?= 192.168.202.127

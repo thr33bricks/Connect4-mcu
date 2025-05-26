@@ -1,12 +1,15 @@
+#include "speaker.h"
+
 #include <stdint.h>
 #include <stdio.h>
+
 #include "mzapo_phys.h"
 #include "mzapo_regs.h"
-#include "mzapo_parlcd.h"  // pour parlcd_delay()
-
-#define VOL 2 // Volume level (0-100)
+#include "mzapo_parlcd.h"
+#include "settings.h"
 
 volatile uint32_t *audiopwm_base;
+
 
 void initSpeaker() {
     audiopwm_base = map_phys_address(AUDIOPWM_REG_BASE_PHYS, AUDIOPWM_REG_SIZE, 0);

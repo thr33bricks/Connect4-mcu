@@ -1,13 +1,19 @@
 #include "lcd.h"
+
+#include <stdlib.h>
+
 #include "mzapo_parlcd.h"
 #include "mzapo_phys.h"
 #include "mzapo_regs.h"
 #include "font_types.h"
-#include <stdio.h>
+#include "settings.h"
 
 
 DisBuff disBuff;
 void *parlcd_mem_base;
+
+uint8_t shadow = 2;
+uint16_t shadowColor = BLACK;
 
 
 void initLcd(){
@@ -23,14 +29,16 @@ void draw(){
 
     parlcd_write_cmd(parlcd_mem_base, 0x2C);
 
+    #ifdef PARLCD_32BIT
+    // Messy image for some reason :X
+    for (int i = 0; i < disBuff.height * disBuff.width; i+=2){
+        parlcd_write_data2x(parlcd_mem_base, (((uint32_t)data[i])<<16) | (uint32_t)data[i+1]);
+    }
+    #else
     for (int i = 0; i < disBuff.height * disBuff.width; i++){
         parlcd_write_data(parlcd_mem_base, data[i]);
     }
-
-    // Messy image for some reason :X
-    // for (int i = 0; i < disBuff.height * disBuff.width; i+=2){
-    //     parlcd_write_data2x(parlcd_mem_base, (((uint32_t)data[i])<<16) | (uint32_t)data[i+1]);
-    // }
+    #endif
 }
 
 void drawPixel(uint16_t x, uint16_t y, uint16_t color){
@@ -182,6 +190,10 @@ void drawText(uint8_t size, int x, int y, char *text, uint16_t color, uint8_t fo
 
             for (int col = 0; col < charWidth; ++col) {
                 if (rowBits & (1 << (15 - col))) {
+                    // Shadow
+                    (size == 1) ? drawPixel(cursorX + col + shadow, y + row + shadow, shadowColor) :
+                        drawPixelBig(cursorX + col * size + shadow, y + row * size + shadow, size, shadowColor);
+
                     (size == 1) ? drawPixel(cursorX + col, y + row, color) :
                         drawPixelBig(cursorX + col * size, y + row * size, size, color);
                 }
@@ -191,4 +203,9 @@ void drawText(uint8_t size, int x, int y, char *text, uint16_t color, uint8_t fo
         // Move cursor forward
         cursorX += charWidth + size*((size == 1) ? 2 : 6); // Add pixel spacing
     }
+}
+
+void setShadow(uint8_t _shadow, uint16_t color) {
+    shadow = _shadow;
+    shadowColor = color;
 }
