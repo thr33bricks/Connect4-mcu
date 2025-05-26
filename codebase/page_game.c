@@ -17,15 +17,19 @@ int8_t lastPosX = 8;
 int8_t currPosX = 0;
 int8_t currPosY;
 
-uint8_t gameStarted = 0;
+uint8_t firstMove = 0;
 
+
+void resetcurrPosX(){
+    currPosX = 0;
+    lastPosX = 8;
+    firstMove = 0;
+}
 
 void searchValidPosX(char board[6][7], uint8_t rot){
     int8_t delta = (rot == 'l') ? -1 : 1;
 
     while(1){
-        printf("delta: %d\n", delta);
-        printf("currPosX: %d, currPosY: %d\n", currPosX, currPosY);
         for (currPosY = 5; currPosY >= 0 ; --currPosY){
             if(board[currPosY][currPosX] == 'o' || currPosY == -1)
                 break;
@@ -61,8 +65,8 @@ void currentSelection(char board[6][7]){
     searchValidPosX(board, rot);
 
     if(lastPosX != currPosX){
-        if(gameStarted == 0){
-            gameStarted = 1;
+        if(firstMove == 0){
+            firstMove = 1;
         }else {
             playScrollSound();
         }

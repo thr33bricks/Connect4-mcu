@@ -22,7 +22,7 @@
 #include "leds.h"
 
 int8_t step = -1;
-uint8_t currGrad = END_GRAD;
+uint8_t currGrad = END_GRAD-1;
 uint64_t lastUpdate = 0;
 
 void updateGrad(){
@@ -32,8 +32,10 @@ void updateGrad(){
 
     if (currGrad < END_GRAD && currGrad > START_GRAD)
       currGrad += step;
-    else
+    else{
       step *= -1;
+      currGrad += step;
+    }
   }
 }
 

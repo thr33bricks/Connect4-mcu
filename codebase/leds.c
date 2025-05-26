@@ -5,7 +5,7 @@
 
 
 #define RGB_RED 0xFF0000
-#define RGB_YELLOW 0xFFCC00
+#define RGB_YELLOW 0xFF7000
 #define RGB_OFF 0x000000
 
 volatile uint32_t *spiled_base;
@@ -16,7 +16,6 @@ void initLeds(){
     setPlayerLedOff();
 }
 
-// currentPlayer => 0 for yellow, 1 for red
 void setPlayerLed(uint8_t current_player){
     if (current_player == 0) {
         setLed1(RGB_YELLOW);

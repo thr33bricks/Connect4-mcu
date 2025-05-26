@@ -24,10 +24,11 @@ uint8_t gameOver;
 
 
 void initGame() {
+    resetcurrPosX();
     resetRot(ROT_RED);
     setPlayerLedOff();
     initBoard();
-    gameOver = 1;
+    gameOver = 0;
 }
 
 void initBoard(){

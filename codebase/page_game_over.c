@@ -7,9 +7,9 @@
 #include "lcd.h"
 
 // GAME OVER BUTTONS Locations
-uint16_t menuBtnX = 60;
+uint16_t menuBtnX = 310;
 uint16_t menuBtnY = 220;
-uint16_t plAgainBtnX = 200;
+uint16_t plAgainBtnX = 60;
 uint16_t plAgainBtnY = 220;
 
 

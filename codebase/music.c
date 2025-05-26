@@ -1,10 +1,17 @@
+/* 
+  Tetris theme - (Korobeiniki) 
+  More songs available at https://github.com/robsoncouto/arduino-songs                                            
+                                              
+                                              Robson Couto, 2019
+*/
+
 #include "music.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "mzapo_parlcd.h"
 #include "speaker.h"
-
 
 #define NOTE_B0  31
 #define NOTE_C1  33
@@ -97,7 +104,6 @@
 #define NOTE_DS8 4978
 #define REST 0
 
-
 // change this to make the song slower or faster
 const uint8_t tempo = 144; 
 
@@ -111,7 +117,7 @@ int melody[] = {
   NOTE_E5, 4,  NOTE_B4,8,  NOTE_C5,8,  NOTE_D5,4,  NOTE_C5,8,  NOTE_B4,8,
   NOTE_A4, 4,  NOTE_A4,8,  NOTE_C5,8,  NOTE_E5,4,  NOTE_D5,8,  NOTE_C5,8,
   NOTE_B4, -4,  NOTE_C5,8,  NOTE_D5,4,  NOTE_E5,4,
-  NOTE_C5, 4,  NOTE_A4,4,   NOTE_A4,8,
+  NOTE_C5, 4,  NOTE_A4,4,   NOTE_A4,4,
 };
 
 // sizeof gives the number of bytes, each int value is composed of two bytes (16 bits)

@@ -10,11 +10,11 @@
 #define homeInstrBtnY 275
 
 // Lines of text
-#define totalInstructionLines 29
+#define totalInstructionLines 28
 #define maxLinesDisplayed 7
-#define maxSupLine (totalInstructionLines - maxLinesDisplayed - 1)
+#define maxSupLine (totalInstructionLines - maxLinesDisplayed)
 
-uint8_t supLineDisplayed = 0;
+int8_t supLineDisplayed = 0;
 
 
 void resetSupLineDisplayed(){
@@ -125,7 +125,6 @@ void displayLongText(){
         " ",
         "Good luck and have",
         "fun!",
-        "",
         "",
     };
 

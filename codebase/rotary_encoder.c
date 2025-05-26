@@ -176,7 +176,7 @@ uint8_t getWasReleased(uint8_t btn) {
     return 0;
 }
 
-void _checkEdge(uint8_t btn) {
+void checkEdge(uint8_t btn) {
 	// Take samples only on debounce intervals
 	if ((millis()-getSampleTime(btn)) > DEBOUNCE_INTERVAL) {
 		// Sample button state
@@ -195,12 +195,11 @@ void _checkEdge(uint8_t btn) {
 		setLastSample(btn);
 		setSampleTime(btn);
 	}
-
 }
 
 uint8_t wasPressed(uint8_t btn){
 	// Update edge detection
-	_checkEdge(btn);
+	checkEdge(btn);
 	
 	// Save and reset edge state  (_wasPressed)
 	uint8_t edge = getWasPressed(btn);
