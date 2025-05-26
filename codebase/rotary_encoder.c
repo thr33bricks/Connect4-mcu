@@ -4,14 +4,7 @@
 #include "mzapo_phys.h"
 #include <time.h>
 
-// uint64_t _sampleTime;
-// uint64_t  _lastSample;
-// uint64_t  _thisSample;
-// uint64_t  _reading;
-// uint8_t _wasPressed;
-// uint8_t _wasReleased;
-
-// RED
+// BTN RED
 uint64_t _sampleTimeRed;
 uint64_t  _lastSampleRed;
 uint64_t  _thisSampleRed;
@@ -19,7 +12,7 @@ uint64_t  _readingRed;
 uint8_t _wasPressedRed;
 uint8_t _wasReleasedRed;
 
-// GREEN
+// BTN GREEN
 uint64_t _sampleTimeGreen;
 uint64_t  _lastSampleGreen;
 uint64_t  _thisSampleGreen;
@@ -27,13 +20,18 @@ uint64_t  _readingGreen;
 uint8_t _wasPressedGreen;
 uint8_t _wasReleasedGreen;
 
-// BLUE
+// BTN BLUE
 uint64_t _sampleTimeBlue;
 uint64_t  _lastSampleBlue;
 uint64_t  _thisSampleBlue;
 uint64_t  _readingBlue;
 uint8_t _wasPressedBlue;
 uint8_t _wasReleasedBlue;
+
+// Rotary encoders
+uint8_t prevRotRed = 0;
+uint8_t prevRotGreen = 0;
+uint8_t prevRotBlue = 0;
 
 void *knobsBase;
 
@@ -230,4 +228,44 @@ uint8_t getRotBlue() {
     #else
     return (getKnobsMem() & 0x000000ff) >> 2;
     #endif
+}
+
+void resetRot(uint8_t enc) {
+    if(enc == ROT_RED)
+        prevRotRed = getRotRed();
+    else if(enc == ROT_GREEN)
+        prevRotGreen = getRotGreen();
+    else if(enc == ROT_BLUE)
+        prevRotBlue = getRotBlue();
+}
+
+uint8_t getRotDir(uint8_t enc) {
+    uint8_t rot = 0;
+    int8_t delta = 0;
+
+    if(enc == ROT_RED){
+        rot = getRotRed();
+        delta = rot - prevRotRed;
+        prevRotRed = rot;
+    }
+    else if(enc == ROT_GREEN){
+        rot =  getRotGreen();
+        delta = rot - prevRotGreen;
+        prevRotGreen = rot;
+    }
+    else if(enc == ROT_BLUE){
+        rot = getRotBlue();
+        delta = rot - prevRotBlue;
+        prevRotBlue = rot;
+    }
+
+    // No rotation
+    if(delta == 0)
+        return 0;
+
+    // Value overflows
+    if(abs(delta) > 32) {
+        return (delta > 0) ? 'l' : 'r';
+    }
+    return (delta > 0) ? 'r' : 'l';
 }

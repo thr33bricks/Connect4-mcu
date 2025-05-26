@@ -17,7 +17,7 @@ char board[6][7];
 
 // Game variables
 uint8_t lastPosX = 8;
-uint8_t currPosX;
+uint8_t currPosX = 0;
 int8_t currPosY;
 uint8_t currentPlayer; // 0 for yellow, 1 for red
 uint8_t scoreYellow = 0;
@@ -141,9 +141,51 @@ void displayLongText(){
 }
 
 // =========== DISPLAY GAME ========= //
+
+void searchValidPosX(uint8_t rot){
+    //if(rot == 0) return;
+    int8_t delta = (rot == 'l') ? -1 : 1;
+
+    while(1){
+        printf("delta: %d\n", delta);
+        printf("currPosX: %d, currPosY: %d\n", currPosX, currPosY);
+        for (currPosY = 5; currPosY >= 0 ; --currPosY){
+            if(board[currPosY][currPosX] == 'o' || currPosY == -1)
+                break;
+        }
+
+        // No valid position found
+        if(currPosY == -1){
+            currPosX += delta;
+            if(currPosX < 0)
+                currPosX = 6;
+            else if(currPosX > 6)
+                currPosX = 0;
+        } else {
+            break; // Valid position found
+        }
+    }
+    
+}
+
 void currentSelection(){
-    int rot = getRotRed();
-    currPosX = rot % 7;
+    //int rot = getRotRed();
+    //currPosX = rot % 7;
+
+    uint8_t rot = getRotDir(ROT_RED);
+    if(rot == 'l'){
+        if(currPosX > 0)
+            currPosX--;
+        else
+            currPosX = 6;
+    } else if(rot == 'r'){
+        if(currPosX < 6)
+            currPosX++;
+        else
+            currPosX = 0;
+    }
+
+    searchValidPosX(rot);
 
     if(lastPosX != currPosX){
         if(gameOver == 1){
@@ -152,13 +194,6 @@ void currentSelection(){
             playScrollSound();
         }
         lastPosX = currPosX;
-    }
-
-    for (currPosY = 5; currPosY >= 0 ; --currPosY){
-        if(currPosY == -1)
-            return;
-        if(board[currPosY][currPosX] == 'o')
-            break;
     }
 
     if(board[currPosY][currPosX] == 'o')
