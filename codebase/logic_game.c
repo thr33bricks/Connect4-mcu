@@ -41,6 +41,11 @@ uint16_t plAgainBtnY = 220;
 uint16_t homeBtnX = 425;
 uint16_t homeBtnY = 275;
 
+int8_t supLineDisplayed = 0; // Should be >=0 and <=13
+const uint8_t totalInstructionLines = 21;
+const uint8_t maxLinesDisplayed = 7;
+const uint8_t maxSupLine = totalInstructionLines - maxLinesDisplayed - 1;
+
 
 void initBoard(){
     for (uint8_t i = 0; i < 6; ++i){
@@ -103,32 +108,40 @@ void displayMenu(){
 }
 
 //====== DISPLAY INSTRUCTIONS ============//
+void greenTextPosition(){
+    uint8_t rot = getRotDir(ROT_RED);
+    printf("rot: %c\n", rot);
+    supLineDisplayed = supLineDisplayed + ((rot == 'l') ? -1 : ((rot == 'r') ? 1 : 0));
+    printf("supLineDisplayed: %d\n", supLineDisplayed);
+
+    if(supLineDisplayed < 0)
+        supLineDisplayed = 0;
+    else if(supLineDisplayed > maxSupLine)
+        supLineDisplayed = maxSupLine;
+}
+
 void displayInstructions(){
     drawBackground(WHITE);
-    int SupLineDisplayed =0;
-    //int SupLineDisplayed = greenRotaryEncoderPosition(); 
+    greenTextPosition();
     
-    displayLongText(SupLineDisplayed);
-    if (SupLineDisplayed == 13){
+    displayLongText();
+    if (supLineDisplayed == maxSupLine){
         drawHome(425, 275);
     }
+    draw();
 }
 
-int greenRotaryEncoderPosition(){   // TO DO ++++++++++++++++++++++++++++++
-    int SupLineDisplayed; // Should be >=0 and <=13
-
-    return SupLineDisplayed;
-}
-
-void displayLongText(int SupLineDisplayed){
+void displayLongText(){
     const char *instructions_text[] = {
         // 17 instructions lines
         "INSTRUCTIONS",
         "Welcome to Connect 4!",
         "",
-        "This is a two-player game.",
-        "Players take turns dropping",
-        "colored tokens into a grid.",
+        "This is a two-player",
+        "game. Players take",
+        "turns dropping",
+        "colored tokens into",
+        "a grid.",
         "",
         "Goal: align 4 of your tokens",
         "horizontally, vertically, or",
@@ -140,12 +153,15 @@ void displayLongText(int SupLineDisplayed){
         "- Press to drop your token.",
         "",
         "Good luck and have fun!"
+        " ",
+        " ",
+        " ",
     };
     // 5 lines are displayed 
     int x=20;
     int y=10;
-    for (int i=SupLineDisplayed; i<SupLineDisplayed+5;i++){
-        drawText(1, x, y, instructions_text[i], BLACK, 1);
+    for (uint8_t i=supLineDisplayed; i<supLineDisplayed+maxLinesDisplayed;i++){
+        drawText(2, x, y, (char*)instructions_text[i], BLACK, 1);
         y+=40;
     }
 
@@ -480,6 +496,7 @@ GameState handleMenu(){
     if (wasPressed(BTN_GREEN)){
         playClickSound();
         drawInstrButtonAnimation();
+        supLineDisplayed = 0; // Reset the line displayed
         return STATE_INSTRUCTIONS;
     }
 
@@ -546,11 +563,6 @@ GameState handleGame(){
         playClickSound();
         drawHomeButtonAnimation();
         return STATE_MENU;
-    }
-
-    // TEST
-    if (wasPressed(BTN_GREEN)){
-        playClickSound();
     }
 
     return STATE_PLAYING;

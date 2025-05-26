@@ -27,7 +27,7 @@ void drawPlayButton(uint16_t x, uint16_t y);
 void drawInstructionButton(uint16_t x, uint16_t y);
 
 void displayLongText();
-int greenRotaryEncoderPosition();
+void greenTextPosition();
 
 void playScrollSound();
 void playClickSound();
