@@ -2,18 +2,18 @@
 #define SETTINGS_H
 
 // Reverse knobs rotation
-#define REVERSE_ROT
+//#define REVERSE_ROT
 
 // Choose display type
 //#define HX8357_B
-#define ILI9481
+//#define ILI9481
 
 // Send 2 bytes at a time (32-bit)
 // for the screen buffer
 //#define PARLCD_32BIT
 
 // Volume level (0-100)
-#define VOL 1 // 50
+#define VOL 50 // 50
 
 // Start and end gradient (0-255)
 #define START_GRAD 28

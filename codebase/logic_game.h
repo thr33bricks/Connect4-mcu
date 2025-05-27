@@ -7,6 +7,7 @@
  * @date 2025-05-26
  * 
  * @copyright Copyright (c) 2025
+ *            license: GNU General Public License v3.0
  * 
  */
 
