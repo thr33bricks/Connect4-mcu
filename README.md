@@ -22,6 +22,12 @@ The system is written entirely in **C** and is structured around a **finite stat
 
 ---
 
+## 🎬 Video
+
+[![Demo](./pictures/Video_thumbnail.png)](https://files.yourdan.uk/api/public/dl/Lk9xfu0S?inline=true)
+
+---
+
 ## 🔗 Traceability
 
 For a complete overview of the project, including code, documentation, schematics, and screenshots, visit:  
@@ -54,7 +60,7 @@ Press the red button to start a game or the green one to view instructions.
 Scroll with the red knob. Return to menu with the blue button.
 
 ### 🎯 Game Grid Screen
-![Game Grid](./pictures/grid.jpg)  
+![Game Grid](./pictures/Grid.jpg)  
 Rotate the red knob to select a column, press red button to drop a disc.  
 
 ![Target](./pictures/Target.jpg)  
