@@ -10,7 +10,7 @@
 
 // Send 2 bytes at a time (32-bit)
 // for the screen buffer
-//#define PARLCD_32BIT
+#define PARLCD_32BIT
 
 // Volume level (0-100)
 #define VOL 50 // 50
