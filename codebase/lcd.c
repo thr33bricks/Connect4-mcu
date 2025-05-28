@@ -32,7 +32,7 @@ void draw(){
     #ifdef PARLCD_32BIT
     // Messy image for some reason :X
     for (int i = 0; i < disBuff.height * disBuff.width; i+=2){
-        parlcd_write_data2x(parlcd_mem_base, (((uint32_t)data[i])<<16) | (uint32_t)data[i+1]);
+        parlcd_write_data2x(parlcd_mem_base, (((uint32_t)data[i+1])<<16) | (uint32_t)data[i]);
     }
     #else
     for (int i = 0; i < disBuff.height * disBuff.width; i++){
@@ -201,7 +201,8 @@ void drawText(uint8_t size, int x, int y, char *text, uint16_t color, uint8_t fo
         }
 
         // Move cursor forward
-        cursorX += charWidth + size*((size == 1) ? 2 : 6); // Add pixel spacing
+        //cursorX += charWidth + size*((size == 1) ? 2 : 6); // Add pixel spacing
+        cursorX += charWidth * size + 3; // Add pixel spacing
     }
 }
 
