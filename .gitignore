@@ -1,0 +1,13 @@
+# .vscode folder (contains workspace-specific settings, extensions, etc.)
+.vscode/
+DossierTravail/
+
+# Ignore object files
+*.o
+
+# Ignore any file named 'depend'
+**/depend
+
+# Ignore any file named 'connect4'
+**/connect4
+
